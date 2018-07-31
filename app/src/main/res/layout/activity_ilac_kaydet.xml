@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ilacKaydetActivity">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TableLayout
+        android:id="@+id/tableL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffcc66">
+
+            <TextView
+                android:id="@+id/ilacAdiTx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="İlacın Adı**"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/ilacAdiEt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="#000000" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffe6b3">
+
+            <TextView
+                android:id="@+id/ilacAciklamaTx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Açıklma**"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/ilacAciklamaEt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="#000000" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffcc66"
+            android:textColor="#000000">
+
+            <TextView
+                android:id="@+id/acTokTx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Aç-Tok**"
+                android:textColor="#000000" />
+
+            <Spinner
+                android:id="@+id/acTokSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffe6b3">
+
+            <TextView
+                android:id="@+id/kacDefaTx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Kaç Defa**"
+                android:textColor="#000000" />
+
+            <Spinner
+                android:id="@+id/kacDefaSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffcc66">
+
+            <TextView
+                android:id="@+id/kacTaneTx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Kaç Tane**"
+                android:textColor="#000000" />
+
+            <Spinner
+                android:id="@+id/kacTaneSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ffe6b3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="İlacın fotosu"
+                android:textColor="#000000" />
+
+            <ImageView
+                android:id="@+id/ilaccImage"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
+                android:background="@mipmap/ic_launcher_image_ekle"
+                android:onClick="ilacFotoClicked"
+                android:layout_gravity="center"
+                />
+        </TableRow>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#b3ffd9"
+            android:onClick="ilacKaydiClicked"
+            android:text="kaydet"
+            android:textColor="#000000" />
+
+    </TableLayout>
+</ScrollView>
+</RelativeLayout>

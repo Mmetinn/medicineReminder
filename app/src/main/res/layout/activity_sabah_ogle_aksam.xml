@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sabahOgleAksamActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sabah"
+            android:text="Sabah"
+            android:drawableLeft="@mipmap/ic_launcher_sabah"
+            android:layout_marginTop="4dp"
+            android:background="#e0e0d1"
+            android:onClick="sabahClicked"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_launcher_ogle"
+            android:id="@+id/ogle"
+            android:background="#ccccb3"
+            android:layout_marginTop="4dp"
+            android:text="Öğle"
+            android:onClick="ogleClicked"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_launcher_aksam"
+            android:id="@+id/aksam"
+            android:background="#b8b894"
+            android:layout_marginTop="4dp"
+            android:text="akşam"
+            android:onClick="aksamClicked"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_launcher_gece"
+            android:id="@+id/gece"
+            android:text="GEce"
+            android:layout_marginTop="4dp"
+            android:background="#a3a375"
+            android:onClick="geceClicked"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
