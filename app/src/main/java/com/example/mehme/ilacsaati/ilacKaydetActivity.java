@@ -1,6 +1,7 @@
 package com.example.mehme.ilacsaati;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,8 +10,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,34 +26,48 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class ilacKaydetActivity extends MainActivity {
+public class ilacKaydetActivity extends AppCompatActivity {
+    final StringBuilder builder=new StringBuilder();
     Spinner sureSp,kacDefaSp,acTokSp;
     EditText ilacAdiEt;
     EditText ilacAciklamaEt;
     String []sayiArray={"1","2","3","4","5"};
     String []actokArray={"Açlık","Tokluk"};
-    String []bitisArray={"Süresiz","1 Hafta","2 Hafta","3 Hafta","1 Ay","2 Ay","3 Ay","6 Ay","1 Yıl"};
+    String []bitisArray={"1 Hafta","2 Hafta","3 Hafta","1 Ay","2 Ay","3 Ay","6 Ay","1 Yıl"};
+    ArrayList<String> listeSure=new ArrayList<>();
+
+
     String ilac_adi,ilac_aciklama,ilac_sure,ilac_kacdefa,ilac_actok;
     ilaclar_class ilacClass;
     ilacSaatiDB DB = new ilacSaatiDB(ilacKaydetActivity.this);
     PopupMenu popup;
-    Button kameraGaleri;
+    Button kaydetButton;
     ImageView ilacFoto;
     Bitmap thumbnail;
+    TextView txD;
+    String[] arrayIlac=new String[1000];
     byte[] data;
     boolean devam;
     private static int RESULT_LOAD_IMAGE_GALERI=101;
     private static int RESULT_LOAD_IMAGE_KAMERA=102;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +77,18 @@ public class ilacKaydetActivity extends MainActivity {
         acTokSp = (Spinner)findViewById(R.id.acTokSpinner);
         ilacAdiEt=(EditText)findViewById(R.id.ilacAdiEt);
         ilacAciklamaEt=(EditText)findViewById(R.id.ilacAciklamaEt);
+        kaydetButton=(Button)findViewById(R.id.kaydetBtn);
 //        kameraGaleri=(Button)findViewById(R.id.ilacFotoBtn);
         ilacFoto=(ImageView)findViewById(R.id.ilaccImage);
+        listeSure.add("0 Hafta");
+        listeSure.add("1 Hafta");
+        listeSure.add("2 Hafta");
+        listeSure.add("3 Hafta");
+        listeSure.add("1 Ay");
+        listeSure.add("2 Ay");
+        listeSure.add("3 Ay");
+        listeSure.add("6 Ay");
+        listeSure.add("1 Yıl");
 
         ArrayAdapter<String> adapter  = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,sayiArray);
         ArrayAdapter<String> adapter2  = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,bitisArray);
@@ -90,69 +117,105 @@ public class ilacKaydetActivity extends MainActivity {
             }
         });
 
+        Intent intent = getIntent();
+        if(intent.hasExtra("ilac_id")){
+            kaydetButton.setText("GÜNCELLE");
+            ilacSaatiDB db = new ilacSaatiDB(this);
+            Bundle extras = getIntent().getExtras();
+            int id=Integer.valueOf(extras.getString("ilac_id"));
+            String ilac=db.DBArrayHangiIlac(id);
+            String dizi[]=ilac.split("--");
+            ilacAdiEt.setText(dizi[1]);
+            ilacAciklamaEt.setText(dizi[2]);
+            int positionAcTok=0;
+            if(dizi[3].equals("Tokluk"))
+                positionAcTok=1;
+            acTokSp.setSelection(positionAcTok);
+            kacDefaSp.setSelection(Integer.valueOf(dizi[4]));
+            sureSp.setSelection(listeSure.indexOf(dizi[5]));
+            byte[]a=db.ilac_foto(id);
+            Bitmap bMap = BitmapFactory.decodeByteArray(a, 0, a.length);
+            ilacFoto.setImageBitmap(bMap);
+        }
+int l=77;
     }
     public void ilacKaydiClicked(View v){
         /********************/
-        ilacFoto.setDrawingCacheEnabled(true);
-        ilacFoto.buildDrawingCache();
-        Bitmap bitmap = ilacFoto.getDrawingCache();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        data = baos.toByteArray();
-        //data= ByteBuffer.allocate(4).putInt(1905).array();
+        Intent intent = getIntent();
 
-        /*Drawable drawable = ilacImage.getDrawable();
-        if(drawable!=null) {
-            BitmapDrawable bitmapDrawable = ((BitmapDrawable) drawable);
-            data = new Data(ilacKaydetActivity.this, bitmapDrawable.getBitmap());
-        }*/
+
+
         ilac_adi=ilacAdiEt.getText().toString();
         ilac_aciklama=ilacAciklamaEt.getText().toString();
         ilac_actok=acTokSp.getSelectedItem().toString();
         ilac_kacdefa= kacDefaSp.getSelectedItem().toString();
         ilac_sure=sureSp.getSelectedItem().toString();
 
-        ilacClass = new ilaclar_class(ilac_adi, ilac_aciklama, ilac_actok, ilac_kacdefa, ilac_sure, data);
-        DB.ilac_ekle(ilacClass);
-        ilacAdiEt.setText("");
-        ilacAciklamaEt.setText("");
-        acTokSp.setSelection(0);
-        kacDefaSp.setSelection(0);
-        sureSp.setSelection(0);
+        ilacFoto.setDrawingCacheEnabled(true);
+        ilacFoto.buildDrawingCache();
+        Bitmap bitmap = ilacFoto.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        data = baos.toByteArray();
 
-        Toast.makeText(this, "Kayıt başarıyla tamamlandı", Toast.LENGTH_SHORT).show();
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        devam=true;
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
+        if(!intent.hasExtra("ilac_id")){
+
+            ilacClass = new ilaclar_class(ilac_adi, ilac_aciklama, ilac_actok, ilac_kacdefa, ilac_sure, data);
+            DB.ilac_ekle(ilacClass);
+
+
+            Toast.makeText(this, R.string.kayit_tamamlandi_toast, Toast.LENGTH_SHORT).show();
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            devam=true;
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            devam=false;
+                            break;
+                        default:
+                            devam=false;
+                            break;
+                    }
+                    if(devam==true){
                         devam=false;
-                        break;
-                    default:
-                        devam=false;
-                        break;
-                }
-                if(devam==true){
-                    devam=false;
                    /* ilacSaatiDB DB = new ilacSaatiDB(ilacKaydetActivity.this);
                     ilaclar_class ilac=new ilaclar_class(ilac_adi,ilac_aciklama,ilac_actok,ilac_kacdefa,ilac_sure);
                     DB.hangi_ilac(ilac);*/
-                    Intent intent = new Intent(ilacKaydetActivity.this,MainActivity.class);
-                    intent.putExtra("ilac_adi",ilac_adi);
-                    intent.putExtra("ilac_aciklama",ilac_aciklama);
-                    intent.putExtra("ilac_actok",ilac_actok);
-                    intent.putExtra("ilac_kacdefa",ilac_kacdefa);
-                    intent.putExtra("ilac_sure",ilac_sure);
-                    intent.putExtra("ilac_foto",data);
-                    startActivity(intent);
+                        Intent intent = new Intent(ilacKaydetActivity.this,MainActivity.class);
+                        intent.putExtra("ilac_adi",ilac_adi);
+                        intent.putExtra("ilac_aciklama",ilac_aciklama);
+                        intent.putExtra("ilac_actok",ilac_actok);
+                        intent.putExtra("ilac_kacdefa",ilac_kacdefa);
+                        intent.putExtra("ilac_sure",ilac_sure);
+                        intent.putExtra("ilac_foto",data);
+                        startActivity(intent);
+                    }
                 }
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Kaydettiğiniz ilaç için alarm ayarlamak ister misiniz misiniz?").setPositiveButton("evet",dialogClickListener).setNegativeButton("hayır",dialogClickListener).show();
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(ilacKaydetActivity.this.getString(R.string.set_want_alarm)).setPositiveButton(ilacKaydetActivity.this.getString(R.string.yes_text),dialogClickListener).setNegativeButton(ilacKaydetActivity.this.getString(R.string.no_text),dialogClickListener).show();
+            ilacAdiEt.setText("");
+            ilacAciklamaEt.setText("");
+            acTokSp.setSelection(0);
+            kacDefaSp.setSelection(0);
+            sureSp.setSelection(0);
+        }else{
+            Bundle extras = getIntent().getExtras();
+            int id=Integer.valueOf(extras.getString("ilac_id"));
+            ilaclar_class ilac=new ilaclar_class(ilac_adi,ilac_aciklama,ilac_actok,ilac_kacdefa,ilac_sure,data,id);
+            ilacSaatiDB db = new ilacSaatiDB(this);
+            db.ilacGuncelle(ilac);
+            ilacAdiEt.setText("");
+            ilacAciklamaEt.setText("");
+            acTokSp.setSelection(0);
+            kacDefaSp.setSelection(0);
+            sureSp.setSelection(0);
+            Toast.makeText(getApplicationContext(),R.string.ilac_guncelle_toast,Toast.LENGTH_SHORT).show();
+        }
+
     }
     public void ilacFotoClicked(View v){
         popup.show();
@@ -190,4 +253,35 @@ public class ilacKaydetActivity extends MainActivity {
         return true;
     }
 
+    public void qrClicked(View view){
+        Thread t=new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try{
+                    Document doc =  Jsoup.connect("https://patient.info/medicine").get();
+                    String title = doc.title();
+                    Elements data = doc.select("div[class=az]");
+                    builder.append(title).append("\n");
+                    for (Element link:data){
+                        builder.append("--").append(link.attr("div")).append("--").append(link.text());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ilacAciklamaEt.setText(builder.toString());
+                    }
+                });
+            }
+        });
+        t.start();
+        arrayIlac=builder.toString().split("--");
+        if(arrayIlac.length!=1) {
+            Toast.makeText(getApplicationContext(), arrayIlac[15] + String.valueOf(builder.length()), Toast.LENGTH_LONG).show();
+            ilacAciklamaEt.setText(arrayIlac[15]);
+        }
+    }
 }

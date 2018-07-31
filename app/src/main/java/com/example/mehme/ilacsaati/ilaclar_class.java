@@ -11,7 +11,18 @@ public class ilaclar_class {
     private byte []data_image;
     private int id;
     public ilaclar_class(){}
-    public ilaclar_class(String ilac_adi,String ilac_aciklama,String ac_tok,String kac_defa,String sure,byte []data_image){
+
+    public ilaclar_class(String ilac_adi, String ilac_aciklama, String ac_tok, String kac_defa, String sure, byte[] data_image, int id) {
+        this.ilac_adi = ilac_adi;
+        this.ilac_aciklama = ilac_aciklama;
+        this.ac_tok = ac_tok;
+        this.kac_defa = kac_defa;
+        this.sure = sure;
+        this.data_image = data_image;
+        this.id = id;
+    }
+
+    public ilaclar_class(String ilac_adi, String ilac_aciklama, String ac_tok, String kac_defa, String sure, byte []data_image){
         this.ilac_adi=ilac_adi;
         this.ilac_aciklama=ilac_aciklama;
         this.ac_tok=ac_tok;

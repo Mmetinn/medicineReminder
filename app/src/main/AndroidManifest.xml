@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mehme.ilacsaati">
-
+    //android:installLocation="preferExternal"
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_alarmhap"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -25,7 +29,11 @@
         <receiver
             android:name=".uygulamaBaslat"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false">
+            <intent-filter>
+                <action android:name="my.action.string" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".girisActivity">
             <intent-filter>
@@ -41,9 +49,55 @@
             android:name=".ilacListeActivity"
             android:parentActivityName=".girisActivity" />
         <activity
-            android:name=".sabahOgleAksamActivity"
+            android:name=".ilacAldinMiActivity"
             android:parentActivityName=".girisActivity" />
-        <activity android:name=".ilacAldinMiActivity"></activity>
+        <activity
+            android:name=".alarmListActivity"
+            android:parentActivityName=".girisActivity" />
+        <activity
+            android:name=".ilacGunuBitiyorActivity"
+            android:parentActivityName=".girisActivity" />
+        <activity
+            android:name=".HastaneRandevuActivity"
+            android:parentActivityName=".girisActivity" />
+        <activity
+            android:name=".acilNumberActivity"
+            android:parentActivityName=".girisActivity" />
+        <activity
+            android:name=".RandevuKaydetActivity"
+            android:parentActivityName=".girisActivity" />
+        <activity
+            android:name=".randevuListActivity"
+            android:parentActivityName=".girisActivity" />
+        <activity
+            android:name=".olcumKaydetActivity"
+            android:parentActivityName=".girisActivity" />
+        <activity
+            android:name=".agirlikOlcumActivity"
+            android:parentActivityName=".olcumKaydetActivity" />
+        <activity
+            android:name=".kanSekeriActivity"
+            android:parentActivityName=".olcumKaydetActivity" />
+        <activity
+            android:name=".adimSayActivity"
+            android:parentActivityName=".olcumKaydetActivity" />
+        <activity
+            android:name=".nabizSayActivity"
+            android:parentActivityName=".olcumKaydetActivity" />
+        <activity
+            android:name=".kanBasinciActivity"
+            android:parentActivityName=".olcumKaydetActivity" />
+        <activity
+            android:name=".tuketilenKaloriActivity"
+            android:parentActivityName=".olcumKaydetActivity" />
+        <activity
+            android:name=".harcananKaloriActivity"
+            android:parentActivityName=".olcumKaydetActivity" />
+        <activity android:name=".kolestrolActivity" />
+        <activity
+            android:name=".vucutSicakligiActivity"
+            android:parentActivityName=".olcumKaydetActivity" />
+        <activity android:name=".UpdateDeleteAlarmActivity"></activity>
     </application>
 
 </manifest>

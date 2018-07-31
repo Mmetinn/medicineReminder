@@ -5,8 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ilacListeActivity">
-    <ListView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/list"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:weightSum="10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+
+                <TextView
+                    android:id="@+id/textGrid"
+                    android:text="@string/medicine_big_text"
+                    android:textSize="34sp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            <GridLayout
+                android:id="@+id/gridimIlac"
+                android:columnCount="1"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                android:layout_weight="8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="14dp"
+                >
+            </GridLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/infoTx"
+                    android:textColor="#000000"
+                    android:textSize="30sp"
+                    android:background="@drawable/border"
+                    android:text="@string/not_available_medicine"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

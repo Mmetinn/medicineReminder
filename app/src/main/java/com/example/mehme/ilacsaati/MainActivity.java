@@ -2,23 +2,18 @@ package com.example.mehme.ilacsaati;
 
 import android.app.ActionBar;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
-import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,23 +27,18 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import static java.lang.Integer.parseInt;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     TimePicker tp=null;
     AlarmManager mgrAlarm=null;
     Calendar c;
     int s=1;
     int counter=0;
-    ArrayList<Integer>alarmList=new ArrayList<>();
     byte[] array;
     String []slogan=new String[20];
     int slogan_no;
@@ -57,15 +47,24 @@ public class MainActivity extends AppCompatActivity  {
     Spinner ilacSecSp;
     ArrayList<String> ilacAdList=new ArrayList<>();
     ArrayList<String> ilacIdList=new ArrayList<>();
+    ArrayList<String> ilacKacdefaList=new ArrayList<>();
+
     String []split_ilac=new String[100];
     Button btn;//runtime button
-    TextView denemeText;
+    TextView denemeText,ilacSecTx;
+    int kacAlarmOldu_;
+    int kacDefa_;
+    int kacAlarmOldu;
+    int kacDefa;
+    int sayac=0;
+    static MainActivity instance;
+    boolean devam = false;
+    private static Context context;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        alarmAyarla();
 
         ilacAciklamaTx=(TextView)findViewById(R.id.aciklama);
         ilacAcTokTx=(TextView)findViewById(R.id.actok);
@@ -74,26 +73,43 @@ public class MainActivity extends AppCompatActivity  {
         denemeText=(TextView)findViewById(R.id.surem);
         ilacImage=(ImageView)findViewById(R.id.ilacImagee);
         ilacSecSp=(Spinner)findViewById(R.id.spinner);
+        ilacSecTx=(TextView)findViewById(R.id.ilacSecTx);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mgrAlarm = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+
+
+
+
 
         ilacSaatiDB DB = new ilacSaatiDB(MainActivity.this);
         ArrayList<String> list;
         list=DB.DBArrayIdli();
         int i=0;
+        int size=DB.DBArray().size();
+        if(size==0){
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle(MainActivity.this.getString(R.string.warning));
+            alertDialog.setMessage(MainActivity.this.getString(R.string.no_registered_medicine));
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, MainActivity.this.getString(R.string.ok_text),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    });
+            alertDialog.show();
+        }
 
-        Log.d(String.valueOf(list.size()), " List size ");
         while(i<list.size()){
             String[] satir=list.get(i).split("--");
             ilacAdList.add(satir[1]);
             ilacIdList.add(satir[0]);
+            ilacKacdefaList.add(satir[4]);
             i++;
         }
         split_ilac[0]="0";
         //array list to arrayAdapter. çünkü DB'deki DBArray arraylist döndürüyor ve spinner'a da array adpter bağlanabiliyor
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ilacAdList);
-        /*ArrayList<String> listAlarm=DB.DBArrayAlarm();
-        denemeText.setText(listAlarm.get(1)+listAlarm.get(2)+listAlarm.get(3));*/
         ilacSecSp.setAdapter(arrayAdapter);
 
 
@@ -120,8 +136,6 @@ public class MainActivity extends AppCompatActivity  {
                     String secilen_ilac = DB2.DBArrayHangiIlac(parseInt(ilacIdList.get(position)));
                     split_ilac = secilen_ilac.split("--");
 
-                    Log.d(split_ilac[0], "onCreate: aaaaa" + split_ilac[0]);
-
                     ilacAciklamaTx.setText(split_ilac[2]);
                     ilacAcTokTx.setText(split_ilac[3]);
                     ilacKacDefaTx.setText(split_ilac[4]);
@@ -129,8 +143,25 @@ public class MainActivity extends AppCompatActivity  {
                     array = DB2.ilac_foto(parseInt(split_ilac[0]));
                     Bitmap bMap = BitmapFactory.decodeByteArray(array, 0, array.length);
                     ilacImage.setImageBitmap(bMap);
-                }
 
+                    String ilac_id=ilacIdList.get(position);
+                    ilacSaatiDB DB = new ilacSaatiDB(MainActivity.this);
+                    kacAlarmOldu_=DB.alarmsSay(Integer.parseInt(ilac_id));
+                    kacDefa_=Integer.parseInt(split_ilac[4]);
+
+                    /*if(kacAlarmOldu_==kacDefa_) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                        alertDialog.setTitle("Uyarı");
+                        alertDialog.setMessage("Bu ilaç için bütün alarmları ayarladınız.");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Tamam",
+                                new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                            });
+                        alertDialog.show();
+                    }*/
+                }
                 @Override
                 public void onNothingSelected(AdapterView<?> arg0) {
                     // TODO Auto-generated method stub
@@ -138,177 +169,182 @@ public class MainActivity extends AppCompatActivity  {
             };
 
             ilacSecSp.setOnItemSelectedListener(countrySelectedListener);
-            // Setting ItemClick Handler for Spinner Widget
-        //int kacDefa = Integer.parseInt(split_ilac[4]);
 
-            ilacAciklamaTx.setText(split_ilac[0]+split_ilac[5]+split_ilac[4]+split_ilac[3]+split_ilac[1]+split_ilac[2]);
 
             LinearLayout ll = (LinearLayout) findViewById(R.id.linear);
             tp = new TimePicker(MainActivity.this);
             btn = new Button(MainActivity.this);
+            btn.setBackgroundResource(R.color.colorButton);
+            btn.setTextColor(Color.WHITE);
             tp.setMinimumHeight(50);
             ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
             ll.addView(tp, lp);
             ll.addView(btn, lp);
-            btn.setText("ALARM AYARLA");
+            btn.setText(R.string.set_alarm);
+
 
 
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    c = Calendar.getInstance();
-                    int s=tp.getCurrentHour();
-                    int d=tp.getCurrentMinute();
-                    counter++;
+                    ilacSaatiDB DBsize =new ilacSaatiDB(MainActivity.this);
 
-                    int saatfark=-1;
-                    if(c.get(Calendar.AM_PM)==0)
-                        saatfark =(s-c.get(Calendar.HOUR))*3600000+(d-c.get(Calendar.MINUTE))*60000;
-                    else
-                        saatfark =((s-12)-c.get(Calendar.HOUR))*3600000+(d-c.get(Calendar.MINUTE))*60000;
-
-                    Log.d("TAG", "onClick: "+(saatfark+24*3600000));
-
-                    int kacDefa=Integer.parseInt(split_ilac[4]);
-
-                    alarmList.add(saatfark);
-
-                    if(kacDefa==counter){
-                        btn.setOnClickListener(new View.OnClickListener() {
+                        int ilacSize = DBsize.DBArray().size();
+                    if (ilacSize == 0) {
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                                alertDialog.setTitle("Uyarı");
-                                alertDialog.setMessage("Bu ilaç için bütün alarmları ayarladınız.");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Tamam",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                btn.setClickable(false);
-                                            }
-                                        });
-                                alertDialog.show();
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        devam = true;
+                                        break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        devam = false;
+                                        break;
+                                    default:
+                                        devam = false;
+                                        break;
+                                }
+                                if (devam == true) {
+                                    devam = false;
+                                    Intent intent = new Intent(MainActivity.this, ilacKaydetActivity.class);
+                                    startActivity(intent);
+                                }
                             }
-                        });
-                        tp.setClickable(false);
-                    }
+                        };
+                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage(MainActivity.this.getString(R.string.no_registered_medicine)).setPositiveButton(MainActivity.this.getString(R.string.yes_text), dialogClickListener).setNegativeButton(MainActivity.this.getString(R.string.no_text), dialogClickListener).show();
+                    } else {
 
-                    if(kacDefa==counter){
+                        c = Calendar.getInstance();
+                        int s = tp.getCurrentHour();
+                        int d = tp.getCurrentMinute();
+                        counter++;
+
+                        long saatfark = -1;
+                        if (c.get(Calendar.AM_PM) == 0)
+                            saatfark = (s - c.get(Calendar.HOUR)) * 3600000 + (d - c.get(Calendar.MINUTE)) * 60000;
+                        else
+                            saatfark = ((s - 12) - c.get(Calendar.HOUR)) * 3600000 + (d - c.get(Calendar.MINUTE)) * 60000;
+
+                        Calendar today = Calendar.getInstance();
+                        long now = System.currentTimeMillis();
+                        saatfark += now;
+
+                        Calendar today2 = Calendar.getInstance();
+                        if (saatfark < today2.getTimeInMillis())
+                            saatfark += 24 * 3600000;//86 400 000
+
+
                         int position = ilacSecSp.getSelectedItemPosition();
+                        String ilac_id = ilacIdList.get(position);
+                        String kacinci_alarm = String.valueOf(counter);
 
-                        alarmKaydet(alarmList, kacDefa,position);
+                        ilacSaatiDB DB = new ilacSaatiDB(MainActivity.this);
+                        if(DBsize.alarmsSay(Integer.parseInt(ilac_id))==Integer.parseInt(ilacKacdefaList.get(position))){
+                            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                            alertDialog.setTitle(MainActivity.this.getString(R.string.warning));
+                            alertDialog.setMessage(MainActivity.this.getString(R.string.alarm_count_full));
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, MainActivity.this.getString(R.string.ok_text),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            return;
+                                        }
+                                    });
+                            alertDialog.show();
+                        }else{
+                            alarmKaydet(ilac_id, kacinci_alarm, saatfark);
+                            alarmiAyarla(saatfark);
+                            Toast.makeText(getApplicationContext(),MainActivity.this.getString(R.string.alarm_added), Toast.LENGTH_SHORT).show();
+                        }
+
+
+                        kacDefa = Integer.parseInt(split_ilac[4]);
+                        kacAlarmOldu = DB.alarmsSay(Integer.parseInt(ilac_id));
+
+
                     }
-
-
-                    Toast.makeText(getApplicationContext(),String.valueOf(counter)+" . ALARM EKLENDİ",Toast.LENGTH_SHORT).show();
-
-
-
                 }
             });
-    }
-
-    public void alarmKaydet(ArrayList<Integer> millis_alarm,int kacAlarm,int position){
-        alarmlar_class alarm=null;
-        ilacSaatiDB DB=null;
-        switch (kacAlarm){
-            case 1:
-                alarm=new alarmlar_class(Integer.parseInt(ilacIdList.get(position)),String.valueOf(millis_alarm.get(0))) ;
-                DB = new ilacSaatiDB(MainActivity.this);
-                DB.alarm_ekle(alarm,1);
-                break;
-            case 2:
-                alarm=new alarmlar_class(Integer.parseInt(ilacIdList.get(position)),String.valueOf(millis_alarm.get(0)),String.valueOf(millis_alarm.get(1))) ;
-                DB = new ilacSaatiDB(MainActivity.this);
-                DB.alarm_ekle(alarm,2);
-                break;
-            case 3:
-                alarm=new alarmlar_class(Integer.parseInt(ilacIdList.get(position)),String.valueOf(millis_alarm.get(0)),String.valueOf(millis_alarm.get(1)),String.valueOf(millis_alarm.get(2))) ;
-                DB = new ilacSaatiDB(MainActivity.this);
-                DB.alarm_ekle(alarm,3);
-                break;
-            case 4:
-                alarm=new alarmlar_class(Integer.parseInt(ilacIdList.get(position)),String.valueOf(millis_alarm.get(0)),String.valueOf(millis_alarm.get(1)),String.valueOf(millis_alarm.get(2)),String.valueOf(millis_alarm.get(3))) ;
-                DB = new ilacSaatiDB(MainActivity.this);
-                DB.alarm_ekle(alarm,4);
-                break;
-            case 5:
-                alarm=new alarmlar_class(Integer.parseInt(ilacIdList.get(position)),String.valueOf(millis_alarm.get(0)),String.valueOf(millis_alarm.get(1)),String.valueOf(millis_alarm.get(2)),String.valueOf(millis_alarm.get(3)),String.valueOf(millis_alarm.get(4)));
-                DB = new ilacSaatiDB(MainActivity.this);
-                DB.alarm_ekle(alarm,5);
-                break;
+            MainActivity.context=getApplicationContext();
         }
-
+    public static Context getAppContextMain(){
+        return MainActivity.context;
     }
-    public void alarmAyarla(){
-        ArrayList<String> alarmList = new ArrayList<>();
-        ArrayList<String> alarmIdList = new ArrayList<>();
-        ArrayList<String> alarmIlacIdList = new ArrayList<>();
-        ArrayList<String> alarmAlarmList = new ArrayList<>();
-        ArrayList<String> alarmAlarm1List = new ArrayList<>();
-        ArrayList<String> alarmAlarm2List = new ArrayList<>();
-        ArrayList<String> alarmAlarm3List = new ArrayList<>();
-        ArrayList<String> alarmAlarm4List = new ArrayList<>();
-        ArrayList<String> alarmAlarm5List = new ArrayList<>();
-        ilacSaatiDB DB= new ilacSaatiDB(MainActivity.this);
-        alarmList=DB.DBArrayAlarm();
-        int sayac=0;
-        mgrAlarm = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-        while(sayac<alarmList.size()){
-            String[] satir=alarmList.get(sayac).split("--");
+
+    public void alarmiAyarla(long alarmDeger){
+        ilacSaatiDB d = new ilacSaatiDB(MainActivity.this);
+        ArrayList<String>dataAlarm=d.DBArrayAlarm();
+        int i=0;
+        while (i<dataAlarm.size()){
+            String dizi[]=dataAlarm.get(i).split("--");
+            sayac=Integer.parseInt(dizi[0]);
+            i++;
+        }
+        sayac++;
+        /*int index=alarmMillisList.size()-1;
+        String deger=alarmMillisList.get(index);
+        long alarmDeger=Long.valueOf(deger);*/
+        Intent intent = new Intent(MainActivity.this, myBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, sayac, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mgrAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmDeger,AlarmManager.INTERVAL_DAY,pendingIntent);
+
+        Intent intent2 = new Intent(MainActivity.this, uygulamaBaslat.class);
+        int position = ilacSecSp.getSelectedItemPosition();
+        String ilac_id=ilacIdList.get(position);
+        intent2.putExtra("ilac_id",ilac_id);
+        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(MainActivity.this, sayac, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+        mgrAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,alarmDeger,AlarmManager.INTERVAL_DAY,pendingIntent2);
+
+        sayac++;
+
+
+
+       /* Intent intent3 = new Intent("my.action.string");
+        intent3.putExtra("ilac_id",ilac_id);
+        sendBroadcast(intent3);*/
+       /* while(sayac<arrayList.size()) {
+
+            String[] satir = arrayList.get(sayac).split("--");
             alarmIdList.add(satir[0]);
             alarmIlacIdList.add(satir[1]);
-           /* alarmAlarm1List.add(satir[2]);
-            alarmAlarm2List.add(satir[3]);
-            alarmAlarm3List.add(satir[4]);
-            alarmAlarm4List.add(satir[5]);
-            alarmAlarm5List.add(satir[6]);*/
-            alarmAlarmList.add(satir[2]);
-            alarmAlarmList.add(satir[3]);
-            alarmAlarmList.add(satir[4]);
-            alarmAlarmList.add(satir[5]);
-            alarmAlarmList.add(satir[6]);
-            sayac++;
-        }
-        ArrayList<ArrayList> liste=new ArrayList<>();
-
-        liste.add(alarmAlarm1List);
-        liste.add(alarmAlarm2List);
-        liste.add(alarmAlarm3List);
-        liste.add(alarmAlarm4List);
-        liste.add(alarmAlarm5List);
-
-
-        //for (int i = 0; i < sayac; i++){
-            for (int j = 0; j < 5; j++){
-                //ArrayList<String> tempList=liste.get(i);
-                //if(tempList.get(j).equals(null))
-                    //continue;
-                Intent intent = new Intent(MainActivity.this, myBroadcast.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, j, intent, 0);
-                //mgrAlarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+Integer.parseInt(alarmAlarmList.get(j)),pendingIntent);
-                mgrAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,SystemClock.elapsedRealtime()+Integer.parseInt(alarmAlarmList.get(j)),AlarmManager.INTERVAL_DAY,pendingIntent);
-               // intent.putExtra("ilac_ad",ilacSecSp.getSelectedItem().toString());
-                Log.d("abc"," ilk: "+SystemClock.elapsedRealtime() + 60000+" iki: "+SystemClock.elapsedRealtime()+liste.get(j));
-
-                Intent intent2 = new Intent(MainActivity.this, uygulamaBaslat.class);
-                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(MainActivity.this, j, intent2, 0);
-                //mgrAlarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,SystemClock.elapsedRealtime()+Integer.parseInt(alarmAlarmList.get(j)),pendingIntent2);
-                mgrAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,SystemClock.elapsedRealtime()+Integer.parseInt(alarmAlarmList.get(j)),AlarmManager.INTERVAL_DAY,pendingIntent2);
+            alarmMillisList.add(satir[2]);
+            long alarmDeger=Long.parseLong(satir[2]);
+            long now=System.currentTimeMillis();
+            if(alarmDeger<now){
+                sayac++;
+                continue;
             }
-     //   }
 
-/*      Intent intent = new Intent(MainActivity.this, myBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, counter, intent, 0);
-        mgrAlarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+saatfark,pendingIntent);
+            Intent intent = new Intent(MainActivity.this, myBroadcast.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, alarmiAyarlaFuncId, intent, 0);
+            mgrAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmDeger,AlarmManager.INTERVAL_DAY,pendingIntent);
+/*
+            int position = ilacSecSp.getSelectedItemPosition();
+            String ilac_id=ilacIdList.get(position);
 
-        intent.putExtra("ilac_ad",ilacSecSp.getSelectedItem().toString());
-        Log.d("abc"," ilk: "+SystemClock.elapsedRealtime() + 60000+" iki: "+SystemClock.elapsedRealtime()+saatfark);
-        Intent intent2 = new Intent(MainActivity.this, uygulamaBaslat.class);
-        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(MainActivity.this, counter, intent2, 0);
-        mgrAlarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,SystemClock.elapsedRealtime()+saatfark,pendingIntent2);*/
+            Intent intent3 = new Intent("my.action.string");
+            intent3.putExtra("ilac_id",ilac_id);
+            sendBroadcast(intent3);
+*/
+           /* Intent intent2 = new Intent(MainActivity.this, uygulamaBaslat.class);
+            PendingIntent pendingIntent2 = PendingIntent.getBroadcast(MainActivity.this, alarmiAyarlaFuncId, intent2, 0);
+            mgrAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,alarmDeger,AlarmManager.INTERVAL_DAY,pendingIntent2);
+            sayac++;
 
-
+            alarmiAyarlaFuncId++;
+        }*/
     }
+
+    public void alarmKaydet(String ilac_id,String kacinci_alarm,long millis){
+        alarmlar_class alarm=null;
+        ilacSaatiDB DB=null;
+        alarm=new alarmlar_class(millis,ilac_id,kacinci_alarm);
+        DB = new ilacSaatiDB(MainActivity.this);
+        DB.alarm_ekle(alarm);
+    }
+
+
 
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.sag_ustmenu,menu);
@@ -328,3 +364,5 @@ public class MainActivity extends AppCompatActivity  {
         return true;
     }
 }
+
+

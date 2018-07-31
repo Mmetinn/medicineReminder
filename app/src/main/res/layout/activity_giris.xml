@@ -1,17 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:metin="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".girisActivity"
-    android:orientation="horizontal"
-    android:background="#ccffb3">
+    android:id="@+id/girisAct"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    metin:context=".girisActivity"
+    android:orientation="vertical">
 
+    <android.support.design.widget.NavigationView
+    android:layout_width="wrap_content"
+    android:id="@+id/navi"
+    android:layout_height="match_parent"
+    app:headerLayout="@layout/yan_menu_baslik"
+    android:background="#ffffff"
+    app:menu="@menu/drawer_menu"
+    android:layout_gravity="start">
 
-    <com.hitomi.cmlibrary.CircleMenu
-        android:id="@+id/menu_circle"
+    </android.support.design.widget.NavigationView>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <GridLayout
+        android:id="@+id/mainGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true" />
-</RelativeLayout>
+        android:layout_weight="8"
+        android:alignmentMode="alignMargins"
+        android:columnCount="1"
+        android:columnOrderPreserved="false"
+        android:padding="14dp"
+        android:rowCount="4">
+
+        <!-- Row 1 -->
+
+        <!-- Column 1 -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/sabahCard"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            android:layout_row="0">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/almadiklarin"/>
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_margin="16dp"
+                android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="10dp"
+                android:gravity="center">
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/button3"
+                    android:background="@drawable/circle_button3"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textColor="#fff" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tx1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="10dp"
+                android:gravity="center">
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/button2"
+                    android:background="@drawable/circle_button2"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textColor="#fff" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tx2"/>
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/button1"
+                    android:background="@drawable/circle_button1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textColor="#fff" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tx3"/>
+                </LinearLayout>
+            </LinearLayout>
+</LinearLayout>
+        </android.support.v7.widget.CardView>
+    </GridLayout>
+
+    <com.hookedonplay.decoviewlib.DecoView
+        android:id="@+id/dynamicArcView"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/idTxKilo"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/idTxVerdin"/>
+    <com.hookedonplay.decoviewlib.DecoView
+        android:id="@+id/dynamicArcViewStep"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/idTxStep"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/idTxAzCok"/>
+
+</LinearLayout>
+</ScrollView>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/material_design_android_floating_action_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        metin:menu_animationDelayPerItem="55"
+        metin:menu_backgroundColor="@android:color/transparent"
+        metin:menu_buttonSpacing="0dp"
+        metin:menu_colorNormal="#da3c2f"
+        metin:menu_colorPressed="#dc4b3f"
+        metin:menu_colorRipple="#99d4d4d4"
+        metin:menu_fab_label="Floating Action Menu"
+        metin:menu_fab_size="normal"
+        metin:menu_icon="@drawable/fab_add"
+        metin:menu_labels_colorNormal="#333"
+        metin:menu_labels_colorPressed="#444"
+        metin:menu_labels_colorRipple="#66efecec"
+        metin:menu_labels_cornerRadius="3dp"
+        metin:menu_labels_ellipsize="none"
+        metin:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        metin:menu_labels_margin="0dp"
+        metin:menu_labels_maxLines="-1"
+        metin:menu_labels_padding="8dp"
+        metin:menu_labels_position="left"
+        metin:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        metin:menu_labels_showShadow="true"
+        metin:menu_labels_singleLine="false"
+        metin:menu_labels_textColor="#f2f1f1"
+        metin:menu_labels_textSize="15sp"
+        metin:menu_openDirection="up"
+        metin:menu_shadowColor="#66aff198"
+        metin:menu_shadowYOffset="4dp"
+        metin:menu_showShadow="true">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_alarm_ekle"
+            metin:fab_label="@string/set_alarm"
+            metin:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_medicine_ilacc"
+            metin:fab_label="@string/medicine_save"
+            metin:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_alarm_clock_600"
+            metin:fab_label="@string/registered_alarms"
+            metin:fab_size="mini" />
+    </com.github.clans.fab.FloatingActionMenu>
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/kayitli_ilaclar" android:title="@string/registred_medicines" android:icon="@drawable/ic_medicine_ilacc"></item>
+    <item android:id="@+id/kayitli_alarmlar" android:title="@string/registred_alarms" android:icon="@drawable/ic_calendar_takvim"></item>
+    <item android:id="@+id/gunu_bitiyor" android:title="@string/ending" android:icon="@drawable/ic_stopwatch"></item>
+    <item android:id="@+id/olcumler" android:title="@string/enter_measurement" android:icon="@drawable/ic_biten_ilac"></item>
+    <item android:id="@+id/randevu" android:title="@string/make_appointment" android:icon="@drawable/ic_hospital_hastane"></item>
+    <item android:id="@+id/alarm_ayarla" android:title="@string/set_alarm" android:icon="@drawable/ic_alarm_clock_600"></item>
+    <item android:id="@+id/ilac_kaydet" android:title="@string/medicine_save" android:icon="@drawable/ic_alarm_ekle"></item>
+    <item android:id="@+id/acil_numara" android:title="@string/emergency_numbers" android:icon="@drawable/ic_phone_number"></item>
+    <item android:id="@+id/randevu_list" android:title="@string/registred_appointment" android:icon="@drawable/ic_list"></item>
+</menu>

@@ -2,49 +2,23 @@ package com.example.mehme.ilacsaati;
 
 public class alarmlar_class {
     private int id;
-    private int ilac_id;
-    private String alarm1;
-    private String alarm2;
-    private String alarm3;
-    private String alarm4;
-    private String alarm5;
+    private long millis;
+    private String ilac_sira;
+    private String kacinci_alarm;
 
-    public alarmlar_class(int ilac_id, String alarm1, String alarm2, String alarm3, String alarm4, String alarm5) {
-        this.ilac_id = ilac_id;
-        this.alarm1 = alarm1;
-        this.alarm2 = alarm2;
-        this.alarm3 = alarm3;
-        this.alarm4 = alarm4;
-        this.alarm5 = alarm5;
+
+    public alarmlar_class(int id, long millis, String ilac_sira,String kacinci_alarm) {
+        this.id = id;
+        this.millis = millis;
+        this.ilac_sira = ilac_sira;
+        this.kacinci_alarm=kacinci_alarm;
     }
 
-    public alarmlar_class(int ilac_id, String alarm1, String alarm2, String alarm3, String alarm4) {
-        this.ilac_id = ilac_id;
-        this.alarm1 = alarm1;
-        this.alarm2 = alarm2;
-        this.alarm3 = alarm3;
-        this.alarm4 = alarm4;
+    public alarmlar_class(long millis, String ilac_sira, String kacinci_alarm) {
+        this.millis = millis;
+        this.ilac_sira = ilac_sira;
+        this.kacinci_alarm = kacinci_alarm;
     }
-    public alarmlar_class(int ilac_id, String alarm1, String alarm2, String alarm3) {
-        this.ilac_id = ilac_id;
-        this.alarm1 = alarm1;
-        this.alarm2 = alarm2;
-        this.alarm3 = alarm3;
-    }
-
-    public alarmlar_class(int ilac_id, String alarm1, String alarm2) {
-        this.ilac_id = ilac_id;
-        this.alarm1 = alarm1;
-        this.alarm2 = alarm2;
-    }
-
-    public alarmlar_class(int ilac_id, String alarm1) {
-        this.ilac_id = ilac_id;
-        this.alarm1 = alarm1;
-    }
-
-
-
 
     public int getId() {
         return id;
@@ -54,51 +28,27 @@ public class alarmlar_class {
         this.id = id;
     }
 
-    public int getIlac_id() {
-        return ilac_id;
+    public long getMillis() {
+        return millis;
     }
 
-    public void setIlac_id(int ilac_id) {
-        this.ilac_id = ilac_id;
+    public void setMillis(long millis) {
+        this.millis = millis;
     }
 
-    public String getAlarm1() {
-        return alarm1;
+    public String getIlac_sira() {
+        return ilac_sira;
     }
 
-    public void setAlarm1(String alarm1) {
-        this.alarm1 = alarm1;
+    public void setIlac_sira(String ilac_sira) {
+        this.ilac_sira = ilac_sira;
     }
 
-    public String getAlarm2() {
-        return alarm2;
+    public String getKacinci_alarm() {
+        return kacinci_alarm;
     }
 
-    public void setAlarm2(String alarm2) {
-        this.alarm2 = alarm2;
-    }
-
-    public String getAlarm3() {
-        return alarm3;
-    }
-
-    public void setAlarm3(String alarm3) {
-        this.alarm3 = alarm3;
-    }
-
-    public String getAlarm4() {
-        return alarm4;
-    }
-
-    public void setAlarm4(String alarm4) {
-        this.alarm4 = alarm4;
-    }
-
-    public String getAlarm5() {
-        return alarm5;
-    }
-
-    public void setAlarm5(String alarm5) {
-        this.alarm5 = alarm5;
+    public void setKacinci_alarm(String kacinci_alarm) {
+        this.kacinci_alarm = kacinci_alarm;
     }
 }
