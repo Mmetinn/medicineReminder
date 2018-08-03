@@ -27,13 +27,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
+
+
 import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity {
+    //private AdView adView;
     TimePicker tp=null;
     AlarmManager mgrAlarm=null;
     Calendar c;
@@ -60,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
     static MainActivity instance;
     boolean devam = false;
     private static Context context;
+
+
+    AdView adView;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +84,21 @@ public class MainActivity extends AppCompatActivity {
         ilacImage=(ImageView)findViewById(R.id.ilacImagee);
         ilacSecSp=(Spinner)findViewById(R.id.spinner);
         ilacSecTx=(TextView)findViewById(R.id.ilacSecTx);
+
+
+        MobileAds.initialize(this,"ca-app-pub-7334446571364171~4227399096");
+        adView=(AdView)findViewById(R.id.adView);
+        AdRequest adRequest=new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.reklamLin);
+       // adView = new AdView(this, AdSize.BANNER, "MY_AD_UNIT_ID");
+
+      //  layout.addView(adView);//Layout ' a reklamı ekliyoruz.
+      //  AdRequest request = new AdRequest();
+
+      //  adView.loadAd(request);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mgrAlarm = (AlarmManager) this.getSystemService(ALARM_SERVICE);
@@ -268,6 +293,9 @@ public class MainActivity extends AppCompatActivity {
             });
             MainActivity.context=getApplicationContext();
         }
+
+
+
     public static Context getAppContextMain(){
         return MainActivity.context;
     }

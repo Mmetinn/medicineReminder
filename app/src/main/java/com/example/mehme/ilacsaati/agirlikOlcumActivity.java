@@ -136,18 +136,19 @@ public class agirlikOlcumActivity extends AppCompatActivity {
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                String mesaj = dataPoint.getY() + " "+R.string.kilo_text;
+                String mesaj = dataPoint.getY() + " "+agirlikOlcumActivity.this.getString(R.string.kilo_text);
                 Toast.makeText(getApplicationContext(), mesaj, Toast.LENGTH_SHORT).show();
             }
         });
-        series.setTitle("kg");
-        series.setDrawBackground(true);
-        series.setDrawDataPoints(true);
-        series.setDataPointsRadius(6);
+        /*series.setTitle("kg");
         graphView.getLegendRenderer().setVisible(true);
         graphView.getLegendRenderer().setTextSize(30);
         graphView.getLegendRenderer().setTextColor(Color.WHITE);
-        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);*/
+        series.setDrawBackground(true);
+        series.setDrawDataPoints(true);
+        series.setDataPointsRadius(6);
+
         graphView.addSeries(series);
     }
     private DataPoint[] getDataPoint(){

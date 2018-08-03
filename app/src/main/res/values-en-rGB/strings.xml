@@ -12,7 +12,7 @@
     <string name="police">Police 155</string>
     <string name="ambulance">Ambulance 112</string>
     <string name="alo_doctor">Alo Doctor 113</string>
-    <string name="many_meters">How Many Meters</string>
+    <string name="many_meters">How Many Steps</string>
     <string name="explation">Explation</string>
     <string name="save_btn">Save</string>
     <string name="weight_hint">Weight</string>

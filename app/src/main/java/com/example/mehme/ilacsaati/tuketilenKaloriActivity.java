@@ -139,14 +139,14 @@ public class tuketilenKaloriActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), mesaj, Toast.LENGTH_SHORT).show();
             }
         });
-        series.setTitle("cal");
         series.setDrawBackground(true);
         series.setDrawDataPoints(true);
         series.setDataPointsRadius(6);
+        /*series.setTitle("cal");
         graphView.getLegendRenderer().setVisible(true);
         graphView.getLegendRenderer().setTextSize(30);
         graphView.getLegendRenderer().setTextColor(Color.WHITE);
-        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);*/
         graphView.addSeries(series);
     }
     private DataPoint[] getDataPoint(){

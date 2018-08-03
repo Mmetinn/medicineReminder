@@ -1,6 +1,8 @@
 package com.example.mehme.ilacsaati;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import java.util.Calendar;
 public class RandevuKaydetActivity extends AppCompatActivity {
     String hastaneAd,polikinikAd,doktorAd,saat,tarih;
     EditText hastaneAdEt,poliklinikAdEt,doktorAdEt;
+    long dayMillis,dateMillis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +40,12 @@ public class RandevuKaydetActivity extends AppCompatActivity {
         int ay = takvim.get(Calendar.MONTH);
         int gun = takvim.get(Calendar.DAY_OF_MONTH);
 
+
         DatePickerDialog dpd = new DatePickerDialog(RandevuKaydetActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dateMillis=takvim.get(Calendar.DAY_OF_YEAR);
                         tarih=String.valueOf(year)+"."+String.valueOf(month)+"."+String.valueOf(dayOfMonth);
                     }
                 }, yil, ay, gun);
@@ -54,10 +59,13 @@ public class RandevuKaydetActivity extends AppCompatActivity {
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
+        final Calendar current=Calendar.getInstance();
         mTimePicker = new TimePickerDialog(RandevuKaydetActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                saat=String.valueOf(selectedHour)+"."+String.valueOf(selectedMinute);
+                dayMillis=current.get(Calendar.HOUR_OF_DAY);
+
+                saat=String.valueOf(selectedHour)+":"+String.valueOf(selectedMinute);
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -71,6 +79,22 @@ public class RandevuKaydetActivity extends AppCompatActivity {
         randevu_class randevu=new randevu_class(hastaneAd,polikinikAd,doktorAd,tarih,saat);
         ilacSaatiDB DB = new ilacSaatiDB(RandevuKaydetActivity.this);
         DB.randevu_ekle(randevu);
+
         Toast.makeText(getApplicationContext(),R.string.kayit_tamamlandi_toast,Toast.LENGTH_SHORT).show();
+        setAlarmNotification();
+    }
+
+    public void setAlarmNotification(){
+        AlarmManager mgrAlarm = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+        long date=System.currentTimeMillis();
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTimeInMillis(date);
+        int year=calendar2.get(Calendar.YEAR);
+        long yearMillis=year*86400000*360;
+        long millisAlarm=yearMillis+dateMillis*86400000+dayMillis*3600000;
+        Intent intent = new Intent(RandevuKaydetActivity.this, myBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(RandevuKaydetActivity.this, 0, intent, 0);
+        mgrAlarm.set(AlarmManager.RTC, year*86400000*360+yearMillis+dateMillis*86400000+dayMillis*3600000,pendingIntent);
     }
 }

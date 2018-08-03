@@ -134,18 +134,19 @@ public class nabizSayActivity extends AppCompatActivity {
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                String mesaj = dataPoint.getY() + " "+R.string.pulse;
+                String mesaj = dataPoint.getY() + " "+nabizSayActivity.this.getString(R.string.pulse);
                 Toast.makeText(getApplicationContext(), mesaj, Toast.LENGTH_SHORT).show();
             }
         });
-        series.setTitle(this.getString(R.string.pulse));
+
         series.setDrawBackground(true);
         series.setDrawDataPoints(true);
         series.setDataPointsRadius(6);
+       /* series.setTitle(this.getString(R.string.pulse));
         graphView.getLegendRenderer().setVisible(true);
         graphView.getLegendRenderer().setTextSize(30);
         graphView.getLegendRenderer().setTextColor(Color.WHITE);
-        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);*/
         graphView.addSeries(series);
     }
     private DataPoint[] getDataPoint(){

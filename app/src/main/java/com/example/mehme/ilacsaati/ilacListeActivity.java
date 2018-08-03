@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -91,6 +92,9 @@ public class ilacListeActivity extends AppCompatActivity {
        LinearLayout ll = new LinearLayout(ilacListeActivity.this);
        ll.setOrientation(LinearLayout.VERTICAL);
        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+       ActionBar.LayoutParams lpSize = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+
+
        gl.addView(ll, lp);
        int sayac2=0;
        while (list.size()>sayac2) {
@@ -124,16 +128,17 @@ public class ilacListeActivity extends AppCompatActivity {
            ll.setGravity(Gravity.CENTER);
            ll.setBackgroundColor(Color.WHITE);
            ll.addView(cv,lp);
-           cv.addView(ll4,lp);
+           cv.addView(ll4,lpSize);
            ll4.addView(ll2,lp);
            ll4.addView(ll3,lp);
-
+            ll4.setGravity(Gravity.CENTER);
            ll2.setOrientation(LinearLayout.VERTICAL);
            ll2.addView(tx1, lp);
            ll2.addView(tx2, lp);
            ll2.addView(tx3, lp);
            ll2.addView(tx4, lp);
            ll2.addView(tx5, lp);
+           ll3.setGravity(Gravity.CENTER);
            ll3.addView(deleteBtn,lp);
            ll3.addView(updateBtn,lp);
             final int index=sayac2;

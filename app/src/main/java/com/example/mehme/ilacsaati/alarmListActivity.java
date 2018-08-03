@@ -87,6 +87,10 @@ public class alarmListActivity extends AppCompatActivity {
             // Create a calendar object that will convert the date and time value in milliseconds to date.
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(millisToDate[j]);
+            ActionBar.LayoutParams lpnewSize = new ActionBar.LayoutParams(50,50);
+
+
+
             if(calendar.get(Calendar.HOUR_OF_DAY)>=0 && calendar.get(Calendar.HOUR_OF_DAY)<=11){
                 deleteBtn=new Button(alarmListActivity.this);
                 deleteBtn.setBackgroundResource(R.drawable.ic_trash);
@@ -97,9 +101,19 @@ public class alarmListActivity extends AppCompatActivity {
 
                 tx1 = new TextView(alarmListActivity.this);
                 String ilacInfo = DB.DBArrayHangiIlacAd(Integer.parseInt(alarmIlacId[j]));
-                String d=ilacInfo+" "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+                String hour_of_day = null,minute;
+                if(calendar.get(Calendar.HOUR_OF_DAY)<10){
+                    hour_of_day="0"+calendar.get(Calendar.HOUR_OF_DAY);
+                }if(calendar.get(Calendar.MINUTE)<10){
+                    minute="0"+calendar.get(Calendar.MINUTE);
+                }else{
+                    hour_of_day=String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+                    minute=String.valueOf(calendar.get(Calendar.MINUTE));
+                }
+                String d=ilacInfo+" "+hour_of_day+":"+minute;
                 tx1.setText(d);
                 ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+
                 lls.addView(ll,lp);
                 ll.addView(tx1, lp);
                 final int index=j;
@@ -164,7 +178,7 @@ public class alarmListActivity extends AppCompatActivity {
                 });
 
 
-                ll.addView(deleteBtn,lp);
+                ll.addView(deleteBtn,lpnewSize);
 
                 //id degerlerini updateDeleteAlarmActivty'e gödenremek için sakladım
                 sabahAlarmId.add(alarmIlacId[j]);
@@ -231,7 +245,7 @@ public class alarmListActivity extends AppCompatActivity {
 
                     }
                 });
-                ll2.addView(deleteBtn2,lp);
+                ll2.addView(deleteBtn2,lpnewSize);
 
 
                 j++;
@@ -296,7 +310,7 @@ public class alarmListActivity extends AppCompatActivity {
 
                     }
                 });
-                ll3.addView(deleteBtn3,lp);
+                ll3.addView(deleteBtn3,lpnewSize);
 
 
                 j++;
@@ -369,7 +383,7 @@ public class alarmListActivity extends AppCompatActivity {
 
                     }
                 });
-                ll4.addView(deleteBtn4,lp);
+                ll4.addView(deleteBtn4,lpnewSize);
                 geceAlarmId.add(alarmIlacId[j]);
                 j++;
             }

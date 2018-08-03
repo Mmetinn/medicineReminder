@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.hookedonplay.decoviewlib.DecoView;
@@ -51,6 +53,21 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
         tx1=(TextView)findViewById(R.id.tx1);
         tx2=(TextView)findViewById(R.id.tx2);
         tx3=(TextView)findViewById(R.id.tx3);
+
+
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if (isFirstRun) {
+            //show sign up activity
+            startActivity(new Intent(girisActivity.this, informationActivity.class));
+            Toast.makeText(girisActivity.this, "Run only once", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).commit();
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.ac,R.string.kapa);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);

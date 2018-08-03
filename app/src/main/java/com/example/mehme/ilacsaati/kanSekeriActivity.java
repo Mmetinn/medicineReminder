@@ -34,7 +34,7 @@ public class kanSekeriActivity extends AppCompatActivity {
     ScrollView scrollView;
     GraphView graphView;
     LinearLayout linnear;
-
+    boolean yazildiMi=false;
     ilacSaatiDB DB = new ilacSaatiDB(kanSekeriActivity.this);
     private static final String KANSEKERI_ID="2";
     @Override
@@ -120,6 +120,7 @@ public class kanSekeriActivity extends AppCompatActivity {
     }
     public void grafik(){
         series = new LineGraphSeries<DataPoint>(getDataPoint());
+
         graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
@@ -138,14 +139,18 @@ public class kanSekeriActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), mesaj, Toast.LENGTH_SHORT).show();
             }
         });
-        series.setTitle("mg/dl");
+       /* if(!yazildiMi) {
+            series.setTitle("mg/dl");
+            graphView.getLegendRenderer().setVisible(true);
+            graphView.getLegendRenderer().setTextSize(30);
+            graphView.getLegendRenderer().setTextColor(Color.WHITE);
+            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+            yazildiMi=true;
+        }*/
         series.setDrawBackground(true);
         series.setDrawDataPoints(true);
         series.setDataPointsRadius(6);
-        graphView.getLegendRenderer().setVisible(true);
-        graphView.getLegendRenderer().setTextSize(30);
-        graphView.getLegendRenderer().setTextColor(Color.WHITE);
-        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+
         graphView.addSeries(series);
     }
     private DataPoint[] getDataPoint(){
