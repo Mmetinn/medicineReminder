@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/ana_sayfa" android:title="@string/ana_sayfa_text" android:icon="@drawable/ic_home"></item>
+    <item android:id="@+id/search" android:title="@string/search_text" android:icon="@drawable/ic_search_icon"></item>
+    <item android:id="@+id/sosyal_medya" android:title="@string/sosyal_medya" android:icon="@drawable/ic_network"></item>
+    <item android:id="@+id/uygulama_hakkında" android:title="@string/app_abouth" android:icon="@drawable/ic_info_ince"></item>
+    <item android:id="@+id/istekleriniz" android:title="@string/tavsiye_text" android:icon="@drawable/ic_email"></item>
+
+</menu>

@@ -7,7 +7,7 @@ public class randevu_class {
     private String tarih;
     private String saat;
     private int id;
-
+    private long millis;
     public randevu_class(String hastaneAd, String poliklinikAd, String doktorAd, String tarih, String saat, int id) {
         this.hastaneAd = hastaneAd;
         this.poliklinikAd = poliklinikAd;
@@ -17,12 +17,13 @@ public class randevu_class {
         this.id = id;
     }
 
-    public randevu_class(String hastaneAd, String poliklinikAd, String doktorAd, String tarih, String saat) {
+    public randevu_class(String hastaneAd, String poliklinikAd, String doktorAd, String tarih, String saat,long millis) {
         this.hastaneAd = hastaneAd;
         this.poliklinikAd = poliklinikAd;
         this.doktorAd = doktorAd;
         this.tarih = tarih;
         this.saat = saat;
+        this.millis=millis;
     }
 
     public String getHastaneAd() {
@@ -71,5 +72,13 @@ public class randevu_class {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public long getMillis() {
+        return millis;
+    }
+
+    public void setMillis(long millis) {
+        this.millis = millis;
     }
 }

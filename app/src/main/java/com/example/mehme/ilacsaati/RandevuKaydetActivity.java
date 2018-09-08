@@ -19,7 +19,8 @@ import java.util.Calendar;
 public class RandevuKaydetActivity extends AppCompatActivity {
     String hastaneAd,polikinikAd,doktorAd,saat,tarih;
     EditText hastaneAdEt,poliklinikAdEt,doktorAdEt;
-    long dayMillis,dateMillis;
+    int dpYear, dpMonth, dpDay, tpHour, tpMinute;
+    long mills;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class RandevuKaydetActivity extends AppCompatActivity {
         Uri uri = Uri.parse("http://www.google.com/#q="+hastaneAdEt.getText().toString());
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void tarhiSecClick(View view){
         final Calendar takvim = Calendar.getInstance();
@@ -45,7 +47,9 @@ public class RandevuKaydetActivity extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        dateMillis=takvim.get(Calendar.DAY_OF_YEAR);
+                        dpYear=year;
+                        dpMonth=month;
+                        dpDay=dayOfMonth;
                         tarih=String.valueOf(year)+"."+String.valueOf(month)+"."+String.valueOf(dayOfMonth);
                     }
                 }, yil, ay, gun);
@@ -63,11 +67,11 @@ public class RandevuKaydetActivity extends AppCompatActivity {
         mTimePicker = new TimePickerDialog(RandevuKaydetActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                dayMillis=current.get(Calendar.HOUR_OF_DAY);
-
+                tpHour=selectedHour;
+                tpMinute=selectedMinute;
                 saat=String.valueOf(selectedHour)+":"+String.valueOf(selectedMinute);
             }
-        }, hour, minute, true);//Yes 24 hour time
+        }, hour, minute, true);
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
     }
@@ -76,25 +80,31 @@ public class RandevuKaydetActivity extends AppCompatActivity {
         hastaneAd=hastaneAdEt.getText().toString();
         polikinikAd=poliklinikAdEt.getText().toString();
         doktorAd=doktorAdEt.getText().toString();
-        randevu_class randevu=new randevu_class(hastaneAd,polikinikAd,doktorAd,tarih,saat);
-        ilacSaatiDB DB = new ilacSaatiDB(RandevuKaydetActivity.this);
-        DB.randevu_ekle(randevu);
+
 
         Toast.makeText(getApplicationContext(),R.string.kayit_tamamlandi_toast,Toast.LENGTH_SHORT).show();
         setAlarmNotification();
+        randevu_class randevu=new randevu_class(hastaneAd,polikinikAd,doktorAd,tarih,saat,mills);
+        ilacSaatiDB DB = new ilacSaatiDB(RandevuKaydetActivity.this);
+        DB.randevu_ekle(randevu);
     }
 
     public void setAlarmNotification(){
         AlarmManager mgrAlarm = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-        long date=System.currentTimeMillis();
 
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.setTimeInMillis(date);
-        int year=calendar2.get(Calendar.YEAR);
-        long yearMillis=year*86400000*360;
-        long millisAlarm=yearMillis+dateMillis*86400000+dayMillis*3600000;
-        Intent intent = new Intent(RandevuKaydetActivity.this, myBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(RandevuKaydetActivity.this, 0, intent, 0);
-        mgrAlarm.set(AlarmManager.RTC, year*86400000*360+yearMillis+dateMillis*86400000+dayMillis*3600000,pendingIntent);
+        final Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, dpYear);
+        cal.set(Calendar.MONTH, dpMonth);
+        cal.set(Calendar.DAY_OF_MONTH, dpDay);
+        cal.set(Calendar.HOUR_OF_DAY, tpHour);
+        cal.set(Calendar.MINUTE, tpMinute);
+        cal.set(Calendar.SECOND, 0);
+        mills = cal.getTimeInMillis();
+        mills-=1000*60*60;
+        Intent intent = new Intent(RandevuKaydetActivity.this, AppointmentNotification.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(RandevuKaydetActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mgrAlarm.set(AlarmManager.RTC_WAKEUP, mills,pendingIntent);
+
+
     }
 }

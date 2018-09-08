@@ -209,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginRight="5dp"
-                            android:text="@string/time"
+                            android:text="@string/mevcut"
                             android:textColor="#000000" />
 
                         <TextView
@@ -283,6 +283,30 @@
 
                         </LinearLayout>
 
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    >
+
+                    <LinearLayout
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_margin="16dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/info_alarm"
+                            android:textColor="#000000"
+                            android:background="#cccccc"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </GridLayout>

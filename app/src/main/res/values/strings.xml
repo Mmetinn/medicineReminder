@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">İlaç Güvenliği</string>
+    <string name="app_name">İlaç Hatırlatıcı</string>
     <string name="ac">Aç</string>
     <string name="kapa">Kapa</string>
     <string name="ilac_guncelle_toast">İlaç Güncelleme Başarılı</string>
@@ -109,5 +109,37 @@
     <string name="my_preference">ne oldugu belirsinz</string>
     <string name="my_preference_key">ne oldugu belirsin2</string>
     <string name="start_text">Başla</string>
-
+    <string name="infor_medicine_save">Öncelikle ilacınızı kaydederek başlayabiliriz.İlacınızın elinizde ne kadar bulunduğunu, fotoğrafını adını, açılamasını... ekleyerek ilacınızı tanımanız daha kolaylaşacak.</string>
+    <string name="lets_start">Hadi Başlayalım</string>
+    <string name="appointment_time">Randevunuz 2 saat sonra unutmayınız.</string>
+    <string name="appointment_info">Ayrıntı için tıklayınız.</string>
+    <string name="mevcut">İlaçtan ne kadar mevcut</string>
+    <string name="info_alarm">Siz alarm listele bölümünden alarmı silene kadar alarm günlük olarak devam etmektedir.</string>
+    <string name="medicine_is_end">İlaç mevcut değil.</string>
+    <string name="delete_ques_alert_medic">Silmek istediğnizden emin misiniz? ALARMLAR DA SİLİNECEK</string>
+    <string name="alarmlar_text">ALARMLAR</string>
+    <string name="app_star">Uygulamayı değerlendirmek ister misiniz?</string>
+    <string name="ana_sayfa_text">Ana Sayfa</string>
+    <string name="search_text">  Arama</string>
+    <string name="sosyal_medya">Bizi Takip Edin</string>
+    <string name="app_abouth">Hakkımızda</string>
+    <string name="connect_me">İstekleriniz</string>
+    <string name="instagram">İnstagram</string>
+    <string name="twitter">Twitter</string>
+    <string name="gmail">Gmail</string>
+    <string name="informaition_application">Sağlığınızı en az sizin kadar düşünen İLAÇ SAATİ HATIRLATICI ile ilaçlarınızı almayı unutmayacaksınız.Anı zamanda ölçümlerinizi düzenli şekilde tutup artış ve azalmaları değerlendirebileceksiniz.Hastane randevularınızı da kaydedip unutmamanızı sağlayabilirsiniz.Ayrıca ilaçlarınız bitmeye yaklaştığında uyarı vermektedir daha nice özellik İLAÇ SAATİ HATIRLATICI içerisinde mevcut.Her yönüyle kullanıcı dostu bir uygulamadır kullanıcıların sağlık konusunda bütün isteklerini tek bir uygulama ile karşılayabilmesi için tasarlanmıştır.</string>
+    <string name="app_name_big_text">İLAÇ SAATİ HATIRLATICI</string>
+    <string name="oner_text">Uygulamayı ihtiyacı olanlara da önerebilirsiniz.</string>
+    <string name="tavsiye_text">Tavsiyelerimiz</string>
+    <string name="send_pdf">Pdf Olarak Doktoruna Gönder</string>
+    <string name="explation_date">Ölçüm Tarihi</string>
+    <string name="seker_deger">Ölçüm değeri</string>
+    <string name="hello_text">Merhaba,</string>
+    <string name="seker_long_text">Aşağıdaki tabloda ölçtüğüm ve kaydettiğim şeker değerlerim ölçüm saatleriyle beraber mevcuttur.</string>
+    <string name="creating_pdf">Pdf hazırlanıyor..</string>
+    <string name="installing_text">Yükleniyor...</string>
+    <string name="olcum_tablosu">Ölçüm Tablosu</string>
+    <string name="app_name_small">ilaç saati hatirlatici</string>
+    <string name="grafik">Grafik</string>
+    <string name="title_olcum_grafik">olcum ve grafik</string>
 </resources>

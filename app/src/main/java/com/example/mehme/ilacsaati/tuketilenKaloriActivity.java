@@ -29,7 +29,7 @@ public class tuketilenKaloriActivity extends AppCompatActivity {
 
     LineGraphSeries<DataPoint> series;
     SimpleDateFormat dateFormat= new SimpleDateFormat("dd MMM");
-    SimpleDateFormat dateFormatTx= new SimpleDateFormat("dd MMM HH:MM");
+    SimpleDateFormat dateFormatTx= new SimpleDateFormat("yyyy-MM-dd HH:mm");
     EditText etAciklama,etSeker;
     String kalori,aciklama,tarih;
     ScrollView scrollView;

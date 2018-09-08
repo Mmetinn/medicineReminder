@@ -1,7 +1,12 @@
 package com.example.mehme.ilacsaati;
 
 import android.app.ActionBar;
-import android.graphics.Color;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -12,15 +17,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Image;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,14 +36,18 @@ import java.util.Date;
 public class kanSekeriActivity extends AppCompatActivity {
     LineGraphSeries<DataPoint> series;
     SimpleDateFormat dateFormat= new SimpleDateFormat("dd MMM");
-    SimpleDateFormat dateFormatTx= new SimpleDateFormat("dd MMM HH:MM");
+    SimpleDateFormat dateFormatTx= new SimpleDateFormat("yyyy-MM-dd HH:mm");
     EditText etAciklama,etSeker;
     String kansekeri,aciklama,tarih;
     ScrollView scrollView;
     GraphView graphView;
     LinearLayout linnear;
-    boolean yazildiMi=false;
     ilacSaatiDB DB = new ilacSaatiDB(kanSekeriActivity.this);
+    ProgressDialog progressDoalog;
+    String []headres={"seker degeri","aciklama","olcum tarihi"};
+    String shortText="Merhaba,";
+    String longText="asagidaki tabloda kaydedilen seker sonuclarım, olcum saatleri olcum aciklarmalarim ve bir grafik mevcuttur.\n\n";
+    templatePDF templatePdf;
     private static final String KANSEKERI_ID="2";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +78,15 @@ public class kanSekeriActivity extends AppCompatActivity {
         grafik();
         createCardAll();
 
+    }
+    private ArrayList<String[]>getClients(){
+        ArrayList<String []>rows=new ArrayList<>();
+        rows.add(new String[]{"1","Muhammet","Metin"});
+        rows.add(new String[]{"1","Muhammet","Metin2"});
+        rows.add(new String[]{"1","Muhammet","Metin2"});
+        rows.add(new String[]{"1","Muhammet","Metin3"});
+
+        return rows;
     }
 
     private void createCardAll() {
@@ -139,14 +160,7 @@ public class kanSekeriActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), mesaj, Toast.LENGTH_SHORT).show();
             }
         });
-       /* if(!yazildiMi) {
-            series.setTitle("mg/dl");
-            graphView.getLegendRenderer().setVisible(true);
-            graphView.getLegendRenderer().setTextSize(30);
-            graphView.getLegendRenderer().setTextColor(Color.WHITE);
-            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-            yazildiMi=true;
-        }*/
+
         series.setDrawBackground(true);
         series.setDrawDataPoints(true);
         series.setDataPointsRadius(6);
@@ -169,6 +183,89 @@ public class kanSekeriActivity extends AppCompatActivity {
         DB.olcum_ekle(olcum);
         grafik();
         createCard();
+
     }
 
+    public void pdfCreateClicked(View view){
+        kanSekeriActivity.LoginProgressTask asyn = new LoginProgressTask();
+        asyn.execute();
+        graphView.takeSnapshotAndShare(kanSekeriActivity.this, "exampleGraph", "GraphViewSnapshot");
+
+        Bitmap bitmap = graphView.takeSnapshot();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
+        Image myImg = null;
+        try {
+            myImg = Image.getInstance(stream.toByteArray());
+        } catch (BadElementException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        myImg.setAlignment(Image.MIDDLE);
+
+        templatePdf=new templatePDF(getApplicationContext());
+        templatePdf.openDocument();
+        templatePdf.addMetaData("Clientes","Ventas","Marines");
+        templatePdf.addTitle(kanSekeriActivity.this.getString(R.string.app_name_small),kanSekeriActivity.this.getString(R.string.title_olcum_grafik),dateFormatTx.format(new Date().getTime()));
+        templatePdf.addParagraph(shortText);
+        templatePdf.addParagraph(longText);
+        templatePdf.addSingleTitle(kanSekeriActivity.this.getString(R.string.grafik));
+        templatePdf.addImage(myImg);
+        templatePdf.addSingleTitle(kanSekeriActivity.this.getString(R.string.olcum_tablosu));
+        templatePdf.createTable(headres,getClients());
+        templatePdf.closeDocument();
+    }
+
+    Handler handle = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            progressDoalog.incrementProgressBy(1);
+        }
+    };
+    class LoginProgressTask extends AsyncTask<String, Integer, Boolean> {
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return Boolean.TRUE;
+        }
+        @Override
+        protected void onPreExecute() {
+            progressDoalog = new ProgressDialog(kanSekeriActivity.this);
+            progressDoalog.setMax(100);
+            progressDoalog.setMessage(kanSekeriActivity.this.getString(R.string.installing_text));
+            progressDoalog.setTitle(kanSekeriActivity.this.getString(R.string.creating_pdf));
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDoalog.show();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        while (progressDoalog.getProgress() <= progressDoalog
+                                .getMax()) {
+                            Thread.sleep(50);
+                            handle.sendMessage(handle.obtainMessage());
+                            if (progressDoalog.getProgress() == progressDoalog
+                                    .getMax()) {
+                                progressDoalog.dismiss();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            // result is the value returned from doInBackground
+            progressDoalog.cancel();
+            templatePdf.viewPDF();
+        }
+    }
 }

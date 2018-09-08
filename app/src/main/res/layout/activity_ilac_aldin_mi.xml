@@ -18,17 +18,38 @@
                android:layout_width="match_parent"
                android:layout_height="35sp"
                android:id="@+id/TxilacAdi"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_margin="10dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="35sp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:id="@+id/TxilacAciklama"
                 android:layout_margin="10dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="35sp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:id="@+id/TxilacAcTok"
                 android:layout_margin="10dp"/>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="35sp"
+               android:textSize="12dp"
+               android:textStyle="bold"
+               android:gravity="center"
+               android:layout_gravity="center"
+               android:id="@+id/TxSoz"
+               />
        </LinearLayout>
    </android.support.v7.widget.CardView>
 

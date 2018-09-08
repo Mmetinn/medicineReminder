@@ -17,10 +17,12 @@ public class HastaneRandevuActivity extends AppCompatActivity {
         Uri uri = Uri.parse("https://www.mhrs.gov.tr/Vatandas/");
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void randevuKaydet(View v){
         Intent intent = new Intent(HastaneRandevuActivity.this,RandevuKaydetActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
 }

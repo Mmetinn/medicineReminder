@@ -90,8 +90,13 @@ public class alarmListActivity extends AppCompatActivity {
             ActionBar.LayoutParams lpnewSize = new ActionBar.LayoutParams(50,50);
 
 
-
+            String ilacInfo = DB.DBArrayHangiIlacAd(Integer.parseInt(alarmIlacId[j]));
+            if(ilacInfo==null) {
+                j++;
+                continue;
+            }
             if(calendar.get(Calendar.HOUR_OF_DAY)>=0 && calendar.get(Calendar.HOUR_OF_DAY)<=11){
+
                 deleteBtn=new Button(alarmListActivity.this);
                 deleteBtn.setBackgroundResource(R.drawable.ic_trash);
                 deleteBtn.setTextColor(Color.WHITE);
@@ -100,7 +105,6 @@ public class alarmListActivity extends AppCompatActivity {
                 deleteBtn.setGravity(Gravity.CENTER);
 
                 tx1 = new TextView(alarmListActivity.this);
-                String ilacInfo = DB.DBArrayHangiIlacAd(Integer.parseInt(alarmIlacId[j]));
                 String hour_of_day = null,minute;
                 if(calendar.get(Calendar.HOUR_OF_DAY)<10){
                     hour_of_day="0"+calendar.get(Calendar.HOUR_OF_DAY);
@@ -195,8 +199,17 @@ public class alarmListActivity extends AppCompatActivity {
                 deleteBtn2.setGravity(Gravity.CENTER);
 
                 tx2 = new TextView(alarmListActivity.this);
-                String ilacInfo = DB.DBArrayHangiIlacAd(Integer.parseInt(alarmIlacId[j]));
-                String d=ilacInfo+" "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+                //String d=ilacInfo+" "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+                String hour_of_day = null,minute;
+                if(calendar.get(Calendar.HOUR_OF_DAY)<10){
+                    hour_of_day="0"+calendar.get(Calendar.HOUR_OF_DAY);
+                }if(calendar.get(Calendar.MINUTE)<10){
+                    minute="0"+calendar.get(Calendar.MINUTE);
+                }else{
+                    hour_of_day=String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+                    minute=String.valueOf(calendar.get(Calendar.MINUTE));
+                }
+                String d=ilacInfo+" "+hour_of_day+":"+minute;
                 tx2.setText(d);
                 tx1Array.add(tx2);
                 ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
@@ -261,8 +274,18 @@ public class alarmListActivity extends AppCompatActivity {
                 deleteBtn3.setGravity(Gravity.CENTER);
 
                 tx3 = new TextView(alarmListActivity.this);
-                String ilacInfo = DB.DBArrayHangiIlacAd(Integer.parseInt(alarmIlacId[j]));
-                String d=ilacInfo+" "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+               // String d=ilacInfo+" "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+
+                String hour_of_day = null,minute;
+                if(calendar.get(Calendar.HOUR_OF_DAY)<10){
+                    hour_of_day="0"+calendar.get(Calendar.HOUR_OF_DAY);
+                }if(calendar.get(Calendar.MINUTE)<10){
+                    minute="0"+calendar.get(Calendar.MINUTE);
+                }else{
+                    hour_of_day=String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+                    minute=String.valueOf(calendar.get(Calendar.MINUTE));
+                }
+                String d=ilacInfo+" "+hour_of_day+":"+minute;
                 tx3.setText(d);
                 tx1Array.add(tx3);
                 ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
@@ -326,8 +349,17 @@ public class alarmListActivity extends AppCompatActivity {
                 deleteBtn4.setGravity(Gravity.CENTER);
 
                 tx4 = new TextView(alarmListActivity.this);
-                String ilacInfo = DB.DBArrayHangiIlacAd(Integer.parseInt(alarmIlacId[j]));
-                String d=ilacInfo+" "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+               //String d=ilacInfo+" "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+                String hour_of_day = null,minute;
+                if(calendar.get(Calendar.HOUR_OF_DAY)<10){
+                    hour_of_day="0"+calendar.get(Calendar.HOUR_OF_DAY);
+                }if(calendar.get(Calendar.MINUTE)<10){
+                    minute="0"+calendar.get(Calendar.MINUTE);
+                }else{
+                    hour_of_day=String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+                    minute=String.valueOf(calendar.get(Calendar.MINUTE));
+                }
+                String d=ilacInfo+" "+hour_of_day+":"+minute;
                 tx4.setText(d);
                 tx1Array.add(tx4);
                 ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
@@ -393,18 +425,22 @@ public class alarmListActivity extends AppCompatActivity {
     public void sabahClicked(View view){
         Intent intent = new Intent(alarmListActivity.this,MainActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void ogleClicked(View view){
         Intent intent = new Intent(alarmListActivity.this,MainActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void ikindiClicked(View view){
         Intent intent = new Intent(alarmListActivity.this,MainActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void geceClicked(View view){
         Intent intent = new Intent(alarmListActivity.this,MainActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
 

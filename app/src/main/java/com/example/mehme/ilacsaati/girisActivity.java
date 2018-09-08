@@ -1,9 +1,12 @@
 package com.example.mehme.ilacsaati;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +39,8 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
     FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3;
     TextView tx1,tx2,tx3;
     LinearLayout ll;
+    BottomNavigationView bottomNavigationView;
+    boolean acikmi=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,12 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
         tx1=(TextView)findViewById(R.id.tx1);
         tx2=(TextView)findViewById(R.id.tx2);
         tx3=(TextView)findViewById(R.id.tx3);
+        bottomNavigationView=(BottomNavigationView)findViewById(R.id.bottom_menu_giris);
 
+        bottomNavigationView.setItemIconTintList(null);
+
+        Menu menu = bottomNavigationView.getMenu();
+        menu.findItem(R.id.ana_sayfa).setIcon(R.drawable.ic_home_bold);
 
         Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isFirstRun", true);
@@ -61,8 +71,7 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
         if (isFirstRun) {
             //show sign up activity
             startActivity(new Intent(girisActivity.this, informationActivity.class));
-            Toast.makeText(girisActivity.this, "Run only once", Toast.LENGTH_LONG)
-                    .show();
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
 
@@ -78,7 +87,7 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
         nv.setNavigationItemSelectedListener(this);
         nv.bringToFront();
 
-        drawerLayout.requestLayout();
+            drawerLayout.requestLayout();
 
         DecoView decoView = (DecoView) findViewById(R.id.dynamicArcView);
 
@@ -251,12 +260,14 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
             public void onClick(View v) {
                 Intent intent2 = new Intent(girisActivity.this,MainActivity.class);
                 startActivity(intent2);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(girisActivity.this,ilacKaydetActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
             }
         });
@@ -264,6 +275,7 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
             public void onClick(View v) {
                 Intent intent = new Intent(girisActivity.this,alarmListActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
             }
         });
@@ -350,6 +362,37 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
         button2.setText(String.valueOf(enbuyukuc[1]));
         button1.setText(String.valueOf(enbuyukuc[2]));
 
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id=item.getItemId();
+                switch (id){
+                    case R.id.search:
+                        Intent i2 = new Intent(girisActivity.this,searchActivity.class);
+                        startActivity(i2);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        break;
+                    case R.id.sosyal_medya:
+                        Intent i3 = new Intent(girisActivity.this,sosyalMedyaActivity.class);
+                        startActivity(i3);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        break;
+                    case R.id.uygulama_hakkında:
+                        Intent i4 = new Intent(girisActivity.this,abouthAppActivity.class);
+                        startActivity(i4);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        break;
+                    case R.id.istekleriniz:
+                        Intent i5 = new Intent(girisActivity.this,claimActivity.class);
+                        startActivity(i5);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        break;
+
+                }
+                return true;
+            }
+        });
+
     }
 
 
@@ -361,37 +404,47 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
             case R.id.kayitli_ilaclar:
                 Intent intent = new Intent(girisActivity.this,ilacListeActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.kayitli_alarmlar:
                 Intent intent4=new Intent(girisActivity.this,alarmListActivity.class);
                 startActivity(intent4);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.gunu_bitiyor:
                 Intent intent5=new Intent(girisActivity.this,ilacGunuBitiyorActivity.class);
                 startActivity(intent5);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.olcumler:
                 Intent intent9=new Intent(girisActivity.this,olcumKaydetActivity.class);
-                startActivity(intent9);                break;
+                startActivity(intent9);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                break;
             case R.id.randevu:
                 Intent intent6=new Intent(girisActivity.this,HastaneRandevuActivity.class);
                 startActivity(intent6);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.alarm_ayarla:
                 Intent intent2 = new Intent(girisActivity.this,MainActivity.class);
                 startActivity(intent2);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.ilac_kaydet:
                 Intent intent3 = new Intent(girisActivity.this,ilacKaydetActivity.class);
                 startActivity(intent3);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.acil_numara:
                 Intent intent7 = new Intent(girisActivity.this,acilNumberActivity.class);
                 startActivity(intent7);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.randevu_list:
                 Intent intent8 = new Intent(girisActivity.this,randevuListActivity.class);
                 startActivity(intent8);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -399,24 +452,20 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
+
+
     private void setNavigationViewListner() {
         nv = (NavigationView) findViewById(R.id.navi);
         nv.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
-    public boolean onCreateOptionsMenu(Menu menu){
+
+  /*  public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.sag_ustmenu,menu);
         return true;
     }
-
+*/
     class uclu_deger{
         int id;
         int hangi_ilac;
@@ -455,5 +504,46 @@ public class girisActivity extends AppCompatActivity implements NavigationView.O
         public void setKac_defa(int kac_defa) {
             this.kac_defa = kac_defa;
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.right_top_button,menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_name) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.benim.ilacsaati.uygulamam");
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+
+                    }
+                }
+            };
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(girisActivity.this);
+            builder.setMessage(R.string.app_star).setPositiveButton(R.string.yes_text,dialogClickListener).setNegativeButton(R.string.no_text,dialogClickListener).show();
+        }
+        if(id==android.R.id.home && !acikmi){
+            acikmi=true;
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
+        else if(id==android.R.id.home && acikmi){
+            acikmi=false;
+            drawerLayout.closeDrawers();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -50,7 +50,7 @@ public class ilacKaydetActivity extends AppCompatActivity {
     EditText ilacAciklamaEt;
     String []sayiArray={"1","2","3","4","5"};
     String []actokArray={"Açlık","Tokluk"};
-    String []bitisArray={"1 Hafta","2 Hafta","3 Hafta","1 Ay","2 Ay","3 Ay","6 Ay","1 Yıl"};
+    String []bitisArray={"1 Haftalık","2 Haftalık","3 Haftalık","4 Haftalık","1 Aylık","2 Aylık","3 Aylık","6 Aylık"};
     ArrayList<String> listeSure=new ArrayList<>();
 
 
@@ -106,10 +106,12 @@ public class ilacKaydetActivity extends AppCompatActivity {
                     case R.id.kameraAc:
                         Intent intentKamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(intentKamera,RESULT_LOAD_IMAGE_KAMERA);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return  true;
                     case R.id.galeriAc:
                         Intent intentGaleri = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intentGaleri,RESULT_LOAD_IMAGE_GALERI);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true;
                     default :
                         return false;
@@ -192,6 +194,7 @@ int l=77;
                         intent.putExtra("ilac_sure",ilac_sure);
                         intent.putExtra("ilac_foto",data);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }
                 }
             };
@@ -248,11 +251,11 @@ int l=77;
         ilacFoto.setMaxWidth(200);
         ilacFoto.setImageBitmap(thumbnail);
     }
-    public boolean onCreateOptionsMenu(Menu menu){
+    /*public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.sag_ustmenu,menu);
         return true;
     }
-
+*/
     public void qrClicked(View view){
         Thread t=new Thread(new Runnable() {
             @Override

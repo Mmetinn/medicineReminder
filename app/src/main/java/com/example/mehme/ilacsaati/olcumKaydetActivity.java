@@ -15,10 +15,12 @@ public class olcumKaydetActivity extends AppCompatActivity {
     public void agirlikClicked(View view){
         Intent intent = new Intent(olcumKaydetActivity.this,agirlikOlcumActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void kanSekeriClicked(View view){
         Intent intent = new Intent(olcumKaydetActivity.this,kanSekeriActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void adimSayClicked(View view){
         Intent intent = new Intent(olcumKaydetActivity.this,adimSayActivity.class);
@@ -27,21 +29,26 @@ public class olcumKaydetActivity extends AppCompatActivity {
     public void nabizClicked(View view){
         Intent intent = new Intent(olcumKaydetActivity.this,kanBasinciActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void tuketilenKaloriClicked(View view){
         Intent intent = new Intent(olcumKaydetActivity.this,tuketilenKaloriActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void harcananKaloriClicked(View view){
         Intent intent = new Intent(olcumKaydetActivity.this,harcananKaloriActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void kolestrolClicked(View view){
         Intent intent = new Intent(olcumKaydetActivity.this,kolestrolActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     public void vucutSicakligiClicked(View view){
         Intent intent = new Intent(olcumKaydetActivity.this,vucutSicakligiActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

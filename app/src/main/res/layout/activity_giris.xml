@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/girisAct"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:design="http://schemas.android.com/apk/res-auto"
     metin:context=".girisActivity"
     android:orientation="vertical">
 
@@ -12,11 +12,10 @@
     android:layout_width="wrap_content"
     android:id="@+id/navi"
     android:layout_height="match_parent"
-    app:headerLayout="@layout/yan_menu_baslik"
+    design:headerLayout="@layout/yan_menu_baslik"
     android:background="#ffffff"
-    app:menu="@menu/drawer_menu"
+    design:menu="@menu/drawer_menu"
     android:layout_gravity="start">
-
     </android.support.design.widget.NavigationView>
 <ScrollView
     android:layout_width="match_parent"
@@ -48,8 +47,8 @@
             android:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_rowWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="8dp"
+            design:cardCornerRadius="8dp"
+            design:cardElevation="8dp"
             android:layout_row="0">
 <LinearLayout
     android:layout_width="wrap_content"
@@ -148,7 +147,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/idTxAzCok"/>
+        android:id="@+id/idTxAzCok"
+        android:layout_marginBottom="60dp"/>
 
 </LinearLayout>
 </ScrollView>
@@ -156,10 +156,11 @@
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/material_design_android_floating_action_menu"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="11dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginLeft="11dp"
         android:layout_marginRight="11dp"
         metin:menu_animationDelayPerItem="55"
@@ -215,4 +216,25 @@
             metin:fab_label="@string/registered_alarms"
             metin:fab_size="mini" />
     </com.github.clans.fab.FloatingActionMenu>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@drawable/shadow_bottom"/>
+    <android.support.design.widget.BottomNavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_menu_giris"
+        android:background="#ffffff"
+        design:menu="@menu/bottom_menu"></android.support.design.widget.BottomNavigationView>
+
+        </FrameLayout>
+    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

@@ -56,6 +56,7 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
     private static final String COLOUMN_DOKTORAD="doktor_adi";
     private static final String COLOUMN_TARIH="tarih";
     private static final String COLOUMN_SAAT="saat";
+    private static final String COLOUMN_MILLISAPPOINTMENT="millis";
 
     private static final String query_randevu="CREATE TABLE "+TABLENAME_RANDEVU+" ( "
             +COLOUMN_IDRANDEVU+" INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -63,7 +64,8 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
             +COLOUMN_POLIKLINIKAD+" TEXT NOT NULL, "
             +COLOUMN_DOKTORAD+" TEXT NOT NULL, "
             +COLOUMN_TARIH+" TEXT NOT NULL, "
-            +COLOUMN_SAAT+" TEXT NOT NULL)";
+            +COLOUMN_SAAT+" TEXT NOT NULL," +
+            COLOUMN_MILLISAPPOINTMENT+" TEXT NOT NULL)";
 
     private static final String TABLENAME_OLCUMTUR="olcum_turleri";
     private static final String COLOUMN_OLCUMTURID="id";
@@ -178,7 +180,7 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
         cursor=DB.rawQuery("SELECT "+COLOUMN_OLCUMDEGER+" , "+COLOUMN_OLCUMTARIH+" FROM "+TABLENAME_OLCUMTUR+" WHERE "+COLOUMN_OLCUMGRUP+" = '"+groupId+"'",null);
         DataPoint []dataPoint= new DataPoint[cursor.getCount()];
         int i=0;
-        DateFormat df = new SimpleDateFormat("dd MMM HH:MM");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date startDate = null;
 
         while (cursor.moveToNext()){
@@ -204,6 +206,8 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
         cv.put(COLOUMN_DOKTORAD,randevu.getDoktorAd());
         cv.put(COLOUMN_TARIH,randevu.getTarih());
         cv.put(COLOUMN_SAAT,randevu.getSaat());
+        cv.put(COLOUMN_MILLISAPPOINTMENT,randevu.getMillis());
+
 
         SQLiteDatabase DB = this.getWritableDatabase();
 
@@ -224,6 +228,19 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
                     +"--"+cursor.getString(2)
                     +"--"+cursor.getString(3)
                     +"--"+cursor.getString(4));
+        }
+        return randevulist;
+    }
+
+    public ArrayList<String> DBArrayRandevuGetMillis(){
+        ArrayList<String> randevulist = new ArrayList<>();
+
+        SQLiteDatabase DB = this.getReadableDatabase();
+
+        String randevular[]={COLOUMN_MILLISAPPOINTMENT};
+        Cursor cursor = DB.query(TABLENAME_RANDEVU,randevular,null, null, null, null, null);
+        while (cursor.moveToNext()){
+            randevulist.add(cursor.getString(0));
         }
         return randevulist;
     }
@@ -276,6 +293,13 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
         DB.close();
     }
 
+    public void alarmDeleteById(int id){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        String where=COLOUMN_ILACID+"="+id;
+        DB.delete(TABLENAME_ALARM,where,null);
+        DB.close();
+    }
+
 
     public void ilacDelete(int id){
         SQLiteDatabase DB = this.getWritableDatabase();
@@ -299,17 +323,7 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
         }
         return hangi_alarm;
     }
-    public String DBArrayHangiAlarmIlacID(long millis){
-        SQLiteDatabase DB = this.getWritableDatabase();
-        Cursor cursor;
-        String hangi_alarm_id = null;
 
-        cursor=DB.rawQuery("SELECT "+COLOUMN_ILACID+" FROM "+TABLENAME_ALARM+" WHERE "+COLOUMN_MILLIS+"="+millis,null);
-        if(cursor.moveToFirst()){
-            hangi_alarm_id=cursor.getString(0);
-        }
-        return hangi_alarm_id;
-    }
 
     public void ilac_ekle(ilaclar_class ilac){
         ContentValues cv = new ContentValues();
@@ -375,29 +389,18 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
         }
         return hangi_ilac;
     }
-
-    public String DBArrayHangiIlacIdsiz(int ilacId){
+    public ArrayList<String> DBArrayHangiIlacinAlarmIdleri(int ilacId){
         SQLiteDatabase DB = this.getWritableDatabase();
         Cursor cursor;
-        String hangi_ilac = null;
+        ArrayList<String> hangi_ilac = new ArrayList<>();
 
-        cursor=DB.rawQuery("SELECT "+COLOUMN_ADI+","+COLOUMN_ACIKLAMA+","+COLOUMN_ACTOK+","+COLOUMN_KACDEFA+", "+COLOUMN_SURE+" FROM "+TABLE_NAME+" WHERE id="+ilacId,null);
-        if(cursor.moveToFirst()){
-            hangi_ilac=cursor.getString(0)+"--"+cursor.getString(1)+"--"+cursor.getString(2)+"--"
-                    +cursor.getString(3)+"--"+cursor.getString(4);
+        cursor=DB.rawQuery("SELECT "+COLOUMN_ALARMID+" FROM "+TABLENAME_ALARM+" WHERE "+COLOUMN_ILACID+"="+ilacId,null);
+        while (cursor.moveToNext()){
+            hangi_ilac.add(cursor.getString(0));
         }
         return hangi_ilac;
     }
 
-    public void alarmGuncelle(int id,long millis){
-        SQLiteDatabase DB = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COLOUMN_MILLIS,millis);
-
-        String where=COLOUMN_ALARMID+"="+id;
-        DB.update(TABLENAME_ALARM,cv,where,null);
-        DB.close();
-    }
 
     public void ilacGuncelle(ilaclar_class ilac){
         SQLiteDatabase DB = this.getWritableDatabase();
@@ -413,6 +416,8 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
         DB.update(TABLE_NAME,cv,where,null);
         DB.close();
     }
+
+
 
     public String DBArrayHangiIlacAd(int ilacId){
         SQLiteDatabase DB = this.getWritableDatabase();
@@ -460,4 +465,6 @@ public class ilacSaatiDB extends SQLiteOpenHelper {
         }
         return kac;
     }
+
+
 }

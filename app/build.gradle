@@ -6,8 +6,8 @@ android {
         applicationId "com.benim.ilacsaati.uygulamam"//"com.example.mehme.ilacsaati"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 2
-        versionName "1.1"
+        versionCode 4
+        versionName "1.0.3"
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -37,6 +37,8 @@ dependencies {
     compile 'com.github.clans:fab:1.6.2'
     compile 'com.github.pavlospt:circleview:1.3'
     compile 'com.github.bmarrdev:android-DecoView-charting:v0.9.3'
+    compile 'com.android.support:design:27.1.1'
+    compile 'com.itextpdf:itextg:5.5.10'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
+    compile 'com.github.barteksc:android-pdf-viewer:2.8.1'
 }
-

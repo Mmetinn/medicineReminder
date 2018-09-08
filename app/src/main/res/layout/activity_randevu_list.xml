@@ -12,15 +12,15 @@
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:layout_gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/gridimr"
         >
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:background="@drawable/ic_hospital_hastane" />
 
         <TextView
@@ -29,11 +29,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="RANDEVULAR"
-            android:textSize="34sp" />
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            app:fontFamily="@font/aclonica" />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:background="@drawable/ic_hospital_hastane" />
 
     </LinearLayout>
@@ -50,7 +53,9 @@
             android:layout_height="match_parent"
             android:text="Randevu Mevcut Değil"
             android:textColor="#000000"
-            android:textSize="30sp" />
+            android:textStyle="bold"
+            android:textSize="30sp"
+            app:fontFamily="@font/amatica_sc" />
     </LinearLayout>
 
     <GridLayout

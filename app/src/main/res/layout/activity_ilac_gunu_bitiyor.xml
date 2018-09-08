@@ -23,11 +23,13 @@
 
         <TextView
             android:id="@+id/textGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="@string/almost_done"
             android:textSize="20sp"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#000000"
+            app:fontFamily="@font/aclonica" />
 
     </RelativeLayout>
 

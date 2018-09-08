@@ -32,14 +32,15 @@ public class myBroadcast extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setSmallIcon(R.mipmap.ic_launcher_hapiki)
-                .setContentTitle(context.getString(R.string.medic_time))
-                .setContentText(context.getString(R.string.app_name))
+                .setContentTitle(context.getString(R.string.app_name))
+                .setContentText(context.getString(R.string.medic_time))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(context.getString(R.string.did_you_take)))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setSound(Uri.parse("android.resource://"+context.getPackageName()+"/"+R.raw.notifi));
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1,mBuilder.build());
+
        // Notification notification = mBuilder.build();
      //   notification.sound = Uri.parse("android.resource://com.example.mehme.ilacsaati/" + R.raw.notifi2);
     }

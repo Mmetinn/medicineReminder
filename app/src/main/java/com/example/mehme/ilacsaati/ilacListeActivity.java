@@ -1,7 +1,10 @@
 package com.example.mehme.ilacsaati;
 
 import android.app.ActionBar;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -93,6 +96,8 @@ public class ilacListeActivity extends AppCompatActivity {
        ll.setOrientation(LinearLayout.VERTICAL);
        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
        ActionBar.LayoutParams lpSize = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+       ActionBar.LayoutParams lpSizeWrap = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+
 
 
        gl.addView(ll, lp);
@@ -117,7 +122,7 @@ public class ilacListeActivity extends AppCompatActivity {
            tx1.setText(ilacListeActivity.this.getString(R.string.medicine_name)+": "+ilacAdList.get(sayac2));
            tx2.setText(ilacListeActivity.this.getString(R.string.explation_medic)+": "+aciklamaList.get(sayac2));
            tx3.setText(ilacListeActivity.this.getString(R.string.hungry_satiated)+": "+acTokList.get(sayac2));
-           tx4.setText(ilacListeActivity.this.getString(R.string.how_many)+": "+kacDefaList.get(sayac2));
+           tx4.setText(ilacListeActivity.this.getString(R.string.mevcut)+": "+kacDefaList.get(sayac2));
            tx5.setText(ilacListeActivity.this.getString(R.string.time)+": "+sureList.get(sayac2));
            CardView cv = new CardView(ilacListeActivity.this);
            LinearLayout ll2 = new LinearLayout(ilacListeActivity.this);
@@ -139,8 +144,8 @@ public class ilacListeActivity extends AppCompatActivity {
            ll2.addView(tx4, lp);
            ll2.addView(tx5, lp);
            ll3.setGravity(Gravity.CENTER);
-           ll3.addView(deleteBtn,lp);
-           ll3.addView(updateBtn,lp);
+           ll3.addView(deleteBtn,lpSizeWrap);
+           ll3.addView(updateBtn,lpSizeWrap);
             final int index=sayac2;
            deleteBtn.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -152,6 +157,25 @@ public class ilacListeActivity extends AppCompatActivity {
                                case DialogInterface.BUTTON_POSITIVE:
                                    DB.ilacDelete(Integer.parseInt(arrayID.get(index)));
                                    Toast.makeText(getApplicationContext(),R.string.delete_registration_toast,Toast.LENGTH_SHORT).show();
+                                   ArrayList<String> silinecek_alarmlar=new ArrayList<>();
+                                   silinecek_alarmlar=DB.DBArrayHangiIlacinAlarmIdleri(Integer.parseInt(arrayID.get(index)));
+                                   int s=0;
+                                while (s<silinecek_alarmlar.size()){
+                                       AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                       Intent myIntent = new Intent(getApplicationContext(), myBroadcast.class);
+                                       int id = Integer.parseInt(silinecek_alarmlar.get(s));
+                                       PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), id+1, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                       alarmManager.cancel(pendingIntent);
+
+                                       AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                       Intent myIntent2 = new Intent(getApplicationContext(), uygulamaBaslat.class);
+
+                                       PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), id+1, myIntent2, PendingIntent.FLAG_UPDATE_CURRENT);
+                                       alarmManager2.cancel(pendingIntent2);
+                                       s++;
+                                   }
+                                   DB.alarmDeleteById(Integer.parseInt(arrayID.get(index)));
+
                                    gl.removeAllViews();
                                    listele();
                                    break;
@@ -162,7 +186,7 @@ public class ilacListeActivity extends AppCompatActivity {
                        }
                    };
                    AlertDialog.Builder builder = new AlertDialog.Builder(ilacListeActivity.this);
-                   builder.setMessage(R.string.update_alert).setPositiveButton(R.string.yes_text,dialogClickListener).setNegativeButton(R.string.no_text,dialogClickListener).show();
+                   builder.setMessage(R.string.delete_ques_alert_medic).setPositiveButton(R.string.yes_text,dialogClickListener).setNegativeButton(R.string.no_text,dialogClickListener).show();
 
                }
            });
@@ -178,6 +202,7 @@ public class ilacListeActivity extends AppCompatActivity {
                                    Intent intent = new Intent(ilacListeActivity.this,ilacKaydetActivity.class);
                                    intent.putExtra("ilac_id",arrayID.get(index));
                                    startActivity(intent);
+                                   overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                    break;
                                case DialogInterface.BUTTON_NEGATIVE:
                                    break;

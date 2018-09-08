@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class randevuListActivity extends AppCompatActivity {
     ilacSaatiDB DB;
@@ -36,6 +37,7 @@ public class randevuListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_randevu_list);
 
         DB=new ilacSaatiDB(randevuListActivity.this);
+        ArrayList<String> milliss=DB.DBArrayRandevuGetMillis();
         ArrayList<String> arrayRandevu = DB.DBArrayRandevu();
         gl = (GridLayout)findViewById(R.id.gridimr);
         gl.setRowCount(arrayRandevu.size());
@@ -59,8 +61,12 @@ public class randevuListActivity extends AppCompatActivity {
         ll.setOrientation(LinearLayout.VERTICAL);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         gl.addView(ll, lp);
-
+        final Calendar current=Calendar.getInstance();
         while (j < arrayRandevu.size()){
+            TextView t=new TextView(randevuListActivity.this);
+            if(Long.parseLong(milliss.get(j))<current.getTimeInMillis()){
+                t.setText("Randevu Zamanı Geçmiş");
+            }
             tx1 = new TextView(randevuListActivity.this);
             tx2 = new TextView(randevuListActivity.this);
             tx3 = new TextView(randevuListActivity.this);
@@ -73,6 +79,7 @@ public class randevuListActivity extends AppCompatActivity {
             tx5.setText(this.getString(R.string.hour_text)+": "+saat[j]);
             tx4.setTextColor(Color.parseColor("#0055ff"));
             tx5.setTextColor(Color.parseColor("#0055ff"));
+            t.setTextColor(Color.parseColor("#FF0000"));
             CardView cv = new CardView(randevuListActivity.this);
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,6 +96,7 @@ public class randevuListActivity extends AppCompatActivity {
             ll2.addView(tx3, lp);
             ll2.addView(tx4, lp);
             ll2.addView(tx5, lp);
+            ll2.addView(t   , lp);
             j++;
         }
     }

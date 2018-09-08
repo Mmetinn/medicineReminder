@@ -16,13 +16,15 @@
             android:gravity="center">
 
 
-                <TextView
-                    android:id="@+id/textGrid"
-                    android:text="@string/medicine_big_text"
-                    android:textSize="34sp"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textGrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/medicine_big_text"
+                android:textColor="#000000"
+                android:textSize="34sp"
+                app:fontFamily="@font/aclonica" />
 
 
             <GridLayout
@@ -40,14 +42,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center">
+
                 <TextView
+                    android:id="@+id/infoTx"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/infoTx"
+                    android:layout_gravity="center"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:text="@string/not_available_medicine"
                     android:textColor="#000000"
                     android:textSize="30sp"
-                    android:background="@drawable/border"
-                    android:text="@string/not_available_medicine"/>
+                    app:fontFamily="@font/amatica_sc" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

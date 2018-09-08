@@ -34,7 +34,7 @@ import java.util.Date;
 public class adimSayActivity extends AppCompatActivity implements SensorEventListener{
     LineGraphSeries<DataPoint> series;
     SimpleDateFormat dateFormat= new SimpleDateFormat("dd MMM");
-    SimpleDateFormat dateFormatTx= new SimpleDateFormat("dd MMM HH:MM");
+    SimpleDateFormat dateFormatTx= new SimpleDateFormat("yyyy-MM-dd HH:mm");
     EditText etAciklama,etAdim;
     String adim,aciklama,tarih;
     ScrollView scrollView;

@@ -39,7 +39,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/blood_pressure"
                         android:id="@+id/kanBasinciEt"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        android:inputType="number"/>
                     <EditText
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"

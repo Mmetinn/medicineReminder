@@ -97,8 +97,12 @@ public class informationActivity extends AppCompatActivity implements View.OnCli
         }
     }
     private void loadHome(){
-        startActivity(new Intent(this,girisActivity.class));
-        finish();
+        //startActivity(new Intent(this,girisActivity.class));
+        Dots_layout.setVisibility(View.GONE);
+        vPager.setVisibility(View.GONE);
+        bnNext.setVisibility(View.GONE);
+        bnSkip.setVisibility(View.GONE);
+       // finish();
     }
     private void loadNextSlider(){
         int next_slider=vPager.getCurrentItem()+1;
@@ -108,5 +112,11 @@ public class informationActivity extends AppCompatActivity implements View.OnCli
             loadHome();
             new preferenceManager(this).writePreference();
         }
+    }
+
+    public void baslaClicked(View v){
+        Intent intent = new Intent(informationActivity.this,ilacKaydetActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

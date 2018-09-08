@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -234,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
                                     devam = false;
                                     Intent intent = new Intent(MainActivity.this, ilacKaydetActivity.class);
                                     startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 }
                             }
                         };
@@ -370,26 +372,6 @@ public class MainActivity extends AppCompatActivity {
         alarm=new alarmlar_class(millis,ilac_id,kacinci_alarm);
         DB = new ilacSaatiDB(MainActivity.this);
         DB.alarm_ekle(alarm);
-    }
-
-
-
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.sag_ustmenu,menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-    public boolean onOptionsItemSelected(MenuItem item){
-
-        switch (item.getItemId()) {
-            case R.id.ilacListe:
-                Intent intent = new Intent(this,ilacListeActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
     }
 }
 
